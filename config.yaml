@@ -1,0 +1,7 @@
+options:
+  snap_channel:
+    default: "stable"
+    type: string
+    description: |
+        If install_method is set to "snap" this option controlls channel name.
+        Supported values are: "stable", "candidate", "beta" and "edge"

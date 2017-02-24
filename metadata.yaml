@@ -1,0 +1,12 @@
+name: prometheus-ceph-exporter
+summary: Ceph exporter for Prometheus
+maintainer: Giorgio Di Guardia <giorgio.diguardia@canonical.com>
+description: |
+  This is an exporter that exposes information gathered from Ceph
+  for use by the Prometheus monitoring system.
+tags:
+  - monitoring
+subordinate: false
+provides:
+  ceph-exporter:
+    interface: http
