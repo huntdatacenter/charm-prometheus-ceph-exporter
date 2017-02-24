@@ -6,7 +6,16 @@ description: |
   for use by the Prometheus monitoring system.
 tags:
   - monitoring
+  - ceph
+  - prometheus
 subordinate: false
+requires:
+  ceph:
+    interface: statistics
 provides:
   ceph-exporter:
     interface: http
+series:
+  - xenial
+  - trusty
+  - yakkety

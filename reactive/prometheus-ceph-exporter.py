@@ -16,7 +16,7 @@ CONF_FILE_PATH = '/var/snap/prometheus-ceph-exporter/current/ceph.yml'
 
 @when_not('ceph-exporter.installed')
 def install_packages():
-    hookenv.status_set('maintenance', 'Installing software')
+    hookenv.status_set('maintenance', 'Installing Snap from the Snapstore')
     config = hookenv.config()
     channel = config.get('snap_channel', 'stable')
     try:
@@ -55,6 +55,12 @@ def restart_ceph_exporter():
     hookenv.status_set('active', 'Ready')
     set_state('ceph-exporter.started')
     remove_state('ceph-exporter.do-restart')
+
+@when('ceph-exporter.installed')
+def configuration_exporter():
+    config = hookenv.config()
+    hookenv.open_port(PORT_DEF)
+    set_state('ceph-exporter.do-restart')
 
 
 # Relations
