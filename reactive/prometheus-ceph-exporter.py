@@ -11,14 +11,18 @@ from charms.layer import snap
 
 SNAP_NAME = 'prometheus-ceph-exporter'
 SVC_NAME = 'snap.prometheus-ceph-exporter.ceph-exporter'
-PORT_DEF = 9150
-CONF_FILE_PATH = '/var/snap/prometheus-ceph-exporter/current/ceph.yml'
+PORT_DEF = 9128
+
+def templates_changed(tmpl_list):
+    return any_file_changed(['templates/{}'.format(x) for x in tmpl_list])
+
 
 @when_not('ceph-exporter.installed')
 def install_packages():
-    hookenv.status_set('maintenance', 'Installing Snap from the Snapstore')
+    hookenv.status_set('maintenance', 'Installing software')
     config = hookenv.config()
     channel = config.get('snap_channel', 'stable')
+    # Work around https://pad.lv/1622782
     try:
         snap.install(SNAP_NAME, channel=channel, force_dangerous=False)
     except:
@@ -29,6 +33,16 @@ def install_packages():
 
 def validate_config(filename):
     return yaml.safe_load(open(filename))
+
+
+@when('ceph-exporter.installed')
+@when('ceph-exporter.do-reconfig-yaml')
+def write_ceph_exporter_config_yaml():
+    config = hookenv.config()
+    hookenv.open_port(PORT_DEF)
+    set_state('ceph-exporter.do-restart')
+    remove_state('ceph-exporter.do-reconfig-yaml')
+
 
 @when('ceph-exporter.started')
 def check_config():
@@ -41,6 +55,7 @@ def check_reconfig_ceph_exporter():
 
     if data_changed('ceph-exporter.config', config):
         set_state('ceph-exporter.do-reconfig-yaml')
+
     remove_state('ceph-exporter.do-check-reconfig')
 
 
@@ -55,12 +70,6 @@ def restart_ceph_exporter():
     hookenv.status_set('active', 'Ready')
     set_state('ceph-exporter.started')
     remove_state('ceph-exporter.do-restart')
-
-@when('ceph-exporter.installed')
-def configuration_exporter():
-    config = hookenv.config()
-    hookenv.open_port(PORT_DEF)
-    set_state('ceph-exporter.do-restart')
 
 
 # Relations
