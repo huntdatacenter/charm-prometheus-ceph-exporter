@@ -1,33 +1,28 @@
 # Juju prometheus Ceph exporter charm
-
 Based on https://github.com/digitalocean/ceph_exporter
 
 # Introduction and Preparation
-The charm implements ceph-exporter functionality for Prometheus.
-It uses a snap package, and the charm needs to be deployed where Ceph is running.
-The charm needs to talk to Ceph, so a special read-only account is needed for it to work correctly:
-       
-    sudo ceph auth add client.exporter mon 'allow r'
-    sudo ceph auth get client.exporter -o /etc/ceph/ceph.client.exporter.keyring
+The charm implements ceph-exporter functionality for Prometheus, it consumes the prometheus-ceph-exporter snap package,
+Charm needs to be deployed where Ceph is running, a special read-only account ("exporter") will be created by the charm.
+Since the snap is confined to his own filesystem, ceph config file and "exporter" keyring will be created in ($SNAP_DATA) :
 
-# Before building the charm
+   /var/snap/prometheus-ceph-exporter/current/
 
-On the MAAS host:
+# How to Deploy:
 
-    mkdir -p layers interfaces charms/xenial
+From the MAAS host:
+
     export JUJU_REPOSITORY=$PWD/charms
     export INTERFACE_PATH=$PWD/interfaces
 
 # Build the charm
 
-    charm build
+    charm build -s xenial
 
 # Deploy the charm
 
     juju deploy local:xenial/prometheus-ceph-exporter
-    juju add-relation prometheus prometheus-ceph-exporter
 
+To change the port, refer to the daemon_arguments provided by the snap package at:
+    /var/snap/prometheus-ceph-exporter/current/daemon_arguments
 
-TODO/Wishlist:
-- Create the Ceph user directly via the Charm
-- Exporter PORT as a parameter (For now it is hardcoded as 9128)

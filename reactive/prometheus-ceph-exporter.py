@@ -1,4 +1,19 @@
+# Copyright 2017 Canonical Ltd
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import yaml
+import subprocess
 
 from charmhelpers.core import host, hookenv
 from charmhelpers.core.templating import render
@@ -11,6 +26,7 @@ from charms.layer import snap
 
 SNAP_NAME = 'prometheus-ceph-exporter'
 SVC_NAME = 'snap.prometheus-ceph-exporter.ceph-exporter'
+SNAP_DATA = '/var/snap/' + SNAP_NAME + '/current/'
 PORT_DEF = 9128
 
 def templates_changed(tmpl_list):
@@ -52,7 +68,6 @@ def check_config():
 @when('ceph-exporter.do-check-reconfig')
 def check_reconfig_ceph_exporter():
     config = hookenv.config()
-
     if data_changed('ceph-exporter.config', config):
         set_state('ceph-exporter.do-reconfig-yaml')
 
@@ -61,6 +76,16 @@ def check_reconfig_ceph_exporter():
 
 @when('ceph-exporter.do-restart')
 def restart_ceph_exporter():
+    # Working around snap confinement, creating ceph user, moving conf to snap confined environment ($SNAP_DATA)
+    hookenv.status_set('maintenance', 'Creating ceph user')
+    hookenv.log('Creating exporter ceph user')
+    subprocess.check_call(['ceph', 'auth', 'add', 'client.exporter', 'mon', "allow r"])
+    hookenv.log('Creating exporter keyring file onto {}'.format(SNAP_DATA))
+    subprocess.check_call(['ceph', 'auth', 'get', 'client.exporter', '-o', SNAP_DATA + 'ceph.client.exporter.keyring'])
+    hookenv.log('Copying ceph.conf onto {}'.format(SNAP_DATA))
+    subprocess.check_call(['cp', '/etc/ceph/ceph.conf', SNAP_DATA + 'ceph.conf'])
+    hookenv.log('Modifying snap ceph.conf to point to $SNAP_DATA')
+    subprocess.check_call(['sed', '-i', 's=/etc/ceph/=' + SNAP_DATA + '=g', SNAP_DATA + 'ceph.conf'])
     if not host.service_running(SVC_NAME):
         hookenv.log('Starting {}...'.format(SVC_NAME))
         host.service_start(SVC_NAME)
