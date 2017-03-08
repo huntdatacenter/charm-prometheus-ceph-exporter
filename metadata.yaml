@@ -6,6 +6,9 @@ description: |
   for use by the Prometheus monitoring system.
 tags:
   - monitoring
+  - prometheus
+series:
+  - xenial
 subordinate: false
 provides:
   ceph-exporter:

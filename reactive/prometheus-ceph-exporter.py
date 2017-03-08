@@ -38,11 +38,8 @@ def install_packages():
     hookenv.status_set('maintenance', 'Installing software')
     config = hookenv.config()
     channel = config.get('snap_channel', 'stable')
-    # Work around https://pad.lv/1622782
-    try:
-        snap.install(SNAP_NAME, channel=channel, force_dangerous=False)
-    except:
-        pass
+    snap.install(SNAP_NAME, channel=channel, force_dangerous=False)
+    set_state('ceph-exporter.do-auth-config')
     set_state('ceph-exporter.installed')
     set_state('ceph-exporter.do-check-reconfig')
 
@@ -74,8 +71,8 @@ def check_reconfig_ceph_exporter():
     remove_state('ceph-exporter.do-check-reconfig')
 
 
-@when('ceph-exporter.do-restart')
-def restart_ceph_exporter():
+@when('ceph-exporter.do-auth-config')
+def ceph_auth_config():
     # Working around snap confinement, creating ceph user, moving conf to snap confined environment ($SNAP_DATA)
     hookenv.status_set('maintenance', 'Creating ceph user')
     hookenv.log('Creating exporter ceph user')
@@ -86,6 +83,10 @@ def restart_ceph_exporter():
     subprocess.check_call(['cp', '/etc/ceph/ceph.conf', SNAP_DATA + 'ceph.conf'])
     hookenv.log('Modifying snap ceph.conf to point to $SNAP_DATA')
     subprocess.check_call(['sed', '-i', 's=/etc/ceph/=' + SNAP_DATA + '=g', SNAP_DATA + 'ceph.conf'])
+    remove_state('ceph-exporter.do-auth-config')
+
+@when('ceph-exporter.do-restart')
+def restart_ceph_exporter():
     if not host.service_running(SVC_NAME):
         hookenv.log('Starting {}...'.format(SVC_NAME))
         host.service_start(SVC_NAME)
