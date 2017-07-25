@@ -99,28 +99,31 @@ def check_reconfig_ceph_exporter():
 #     subprocess.check_call(['sed', '-i', 's=/etc/ceph/=' + SNAP_DATA + '=g', SNAP_DATA + 'ceph.conf'])
 #     remove_state('ceph-exporter.do-auth-config')
 
-@when('ceph-client.connected')
+@when('ceph.connected')
 def ceph_connected(ceph_client):
     apt_install(['ceph-common', 'python-ceph'])
 
 
-@when('ceph-client.available')
+@when('ceph.available')
 def ceph_ready(ceph_client):
-    hookenv.status_set('maintenance', 'Creating ceph user')
+    #hookenv.status_set('maintenance', 'Creating ceph user')
     charm_ceph_conf = os.path.join(os.sep, SNAP_DATA, 'ceph.conf')
     cephx_key = os.path.join(os.sep, SNAP_DATA, 'ceph.client.exporter.keyring')
 
     ceph_context = {
-        'auth_supported': ceph_client.auth,
-        'mon_hosts': ceph_client.mon_hosts,
+        'auth_supported': ceph_client.auth(),
+        'mon_hosts': ceph_client.mon_hosts(),
+        'service_name': "exporter",
+        'ringpath': SNAP_DATA,
     }
 
-    with open(charm_ceph_conf, 'w') as cephconf:
-        cephconf.write(render('ceph.conf', ceph_context))
+    #with open(charm_ceph_conf, 'w') as cephconf:
+    #    cephconf.write(render('ceph.conf', ceph_context))
+    render('ceph.conf', charm_ceph_conf, ceph_context)
 
     # Write out the cephx_key also
     with open(cephx_key, 'w') as cephconf:
-        cephconf.write(ceph_client.key)
+        cephconf.write(str(ceph_client.key()))
 
 
 @when('ceph-exporter.do-restart')
