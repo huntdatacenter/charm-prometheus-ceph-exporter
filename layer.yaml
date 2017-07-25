@@ -8,6 +8,7 @@
 "includes":
 - "layer:basic"
 - "interface:http"
+- "interface:ceph-client"
 - "layer:snap"
 "repo": "https://git.launchpad.net/prometheus-ceph-exporter-charm"
 "ignore":

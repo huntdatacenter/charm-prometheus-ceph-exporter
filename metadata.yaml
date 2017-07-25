@@ -14,3 +14,6 @@ subordinate: false
 provides:
   ceph-exporter:
     interface: http
+requires:
+  ceph:
+    interface: ceph-client
