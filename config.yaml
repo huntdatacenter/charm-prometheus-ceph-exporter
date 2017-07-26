@@ -25,3 +25,11 @@
     "description": |
       If install_method is set to "snap" this option controlls channel name.
       Supported values are: "stable", "candidate", "beta" and "edge"
+  "username":
+    "description": "Username to use for ceph mons - defaults to prometheus-ceph-exporter.\n"
+    "type": "string"
+    "default": "prometheus-ceph-exporter"
+  "daemon_arguments":
+    "description": "Daemon arguments to pass to the exporter.\n"
+    "type": "string"
+    "default": ""

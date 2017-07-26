@@ -1,0 +1,17 @@
+# Set the command-line arguments to pass to the ceph_exporter daemon
+{% if username is defined %}
+ARGS="-ceph.user {{ username }} {{ daemon_arguments }}"
+{%- else -%}
+ARGS="{{ daemon_arguments }}"
+{% endif -%}
+
+# Example of the commands:
+#  -ceph.config string
+#        path to ceph config file
+#  -ceph.user string
+#        Ceph user to connect to cluster. (default "admin")
+#  -telemetry.addr string
+#        host:port for ceph exporter (default ":9128")
+#  -telemetry.path string
+#        URL path for surfacing collected metrics (default "/metrics")
+

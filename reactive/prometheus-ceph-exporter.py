@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import yaml
-# import subprocess
 import os
 
 from charmhelpers.core import host, hookenv
@@ -27,15 +26,6 @@ from charms.layer import snap
 from charmhelpers.fetch import (
     apt_install,
 )
-
-# from charmhelpers.contrib.storage.linux.ceph import (
-#    send_request_if_needed,
-#    is_request_complete,
-#    ensure_ceph_keyring,
-#    CephBrokerRq,
-#    delete_keyring,
-# )
-
 
 SNAP_NAME = 'prometheus-ceph-exporter'
 SVC_NAME = 'snap.prometheus-ceph-exporter.ceph-exporter'
@@ -53,7 +43,6 @@ def install_packages():
     config = hookenv.config()
     channel = config.get('snap_channel', 'stable')
     snap.install(SNAP_NAME, channel=channel, force_dangerous=False)
-    # set_state('ceph-exporter.do-auth-config')
     set_state('ceph-exporter.installed')
     set_state('ceph-exporter.do-check-reconfig')
 
@@ -85,20 +74,6 @@ def check_reconfig_ceph_exporter():
     remove_state('ceph-exporter.do-check-reconfig')
 
 
-# @when('ceph-exporter.do-auth-config')
-# def ceph_auth_config():
-#     # Working around snap confinement, creating ceph user, moving conf to snap confined environment ($SNAP_DATA)
-#     hookenv.status_set('maintenance', 'Creating ceph user')
-#     hookenv.log('Creating exporter ceph user')
-#     subprocess.check_call(['ceph', 'auth', 'add', 'client.exporter', 'mon', "allow r"])
-#     hookenv.log('Creating exporter keyring file onto {}'.format(SNAP_DATA))
-#     subprocess.check_call(['ceph', 'auth', 'get', 'client.exporter', '-o', SNAP_DATA + 'ceph.client.exporter.keyring'])
-#     hookenv.log('Copying ceph.conf onto {}'.format(SNAP_DATA))
-#     subprocess.check_call(['cp', '/etc/ceph/ceph.conf', SNAP_DATA + 'ceph.conf'])
-#     hookenv.log('Modifying snap ceph.conf to point to $SNAP_DATA')
-#     subprocess.check_call(['sed', '-i', 's=/etc/ceph/=' + SNAP_DATA + '=g', SNAP_DATA + 'ceph.conf'])
-#     remove_state('ceph-exporter.do-auth-config')
-
 @when('ceph.connected')
 def ceph_connected(ceph_client):
     apt_install(['ceph-common', 'python-ceph'])
@@ -106,24 +81,35 @@ def ceph_connected(ceph_client):
 
 @when('ceph.available')
 def ceph_ready(ceph_client):
-    #hookenv.status_set('maintenance', 'Creating ceph user')
+    username = hookenv.config('username')
+    daemon_conf = os.path.join(os.sep, SNAP_DATA, 'daemon_arguments')
     charm_ceph_conf = os.path.join(os.sep, SNAP_DATA, 'ceph.conf')
-    cephx_key = os.path.join(os.sep, SNAP_DATA, 'ceph.client.exporter.keyring')
+    cephx_key = os.path.join(os.sep, SNAP_DATA, 'ceph.client.%s.keyring' % (username))
 
     ceph_context = {
         'auth_supported': ceph_client.auth(),
         'mon_hosts': ceph_client.mon_hosts(),
-        'service_name': "exporter",
+        'service_name': username,
         'ringpath': SNAP_DATA,
     }
 
-    #with open(charm_ceph_conf, 'w') as cephconf:
-    #    cephconf.write(render('ceph.conf', ceph_context))
+    # Write out the ceph.conf
     render('ceph.conf', charm_ceph_conf, ceph_context)
 
+    ceph_key_context = {
+        'key': str(ceph_client.key()),
+        'username': username,
+    }
+
     # Write out the cephx_key also
-    with open(cephx_key, 'w') as cephconf:
-        cephconf.write(str(ceph_client.key()))
+    render('ceph.keyring', cephx_key, ceph_key_context)
+
+    daemon_context = {
+        'daemon_arguments': hookenv.config('daemon_arguments'),
+    }
+
+    # Write out the daemon.arguments file
+    render('daemon_arguments', daemon_conf, daemon_context)
 
 
 @when('ceph-exporter.do-restart')
