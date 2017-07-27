@@ -1,0 +1,16 @@
+"options":
+  "basic":
+    "use_venv": !!bool "true"
+    "packages": []
+    "include_system_packages": !!bool "false"
+  "snap": {}
+  "prometheus-ceph-exporter": {}
+"includes":
+- "layer:basic"
+- "interface:http"
+- "layer:snap"
+- "interface:ceph-client"
+"repo": "https://git.launchpad.net/prometheus-ceph-exporter-charm"
+"ignore":
+  "prometheus-ceph-exporter": [".*.swp"]
+"is": "prometheus-ceph-exporter"

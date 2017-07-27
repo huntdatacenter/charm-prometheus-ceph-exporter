@@ -1,0 +1,19 @@
+"name": "prometheus-ceph-exporter"
+"summary": "Ceph exporter for Prometheus"
+"maintainer": "Prometheus Charmers <prometheus-charmers@lists.launchpad.net>"
+"description": |
+  This is an exporter that exposes information gathered from Ceph
+  for use by the Prometheus monitoring system.
+"tags":
+- "monitoring"
+- "prometheus"
+"series":
+- "xenial"
+- "trusty"
+"requires":
+  "ceph":
+    "interface": "ceph-client"
+"provides":
+  "ceph-exporter":
+    "interface": "http"
+"subordinate": !!bool "false"

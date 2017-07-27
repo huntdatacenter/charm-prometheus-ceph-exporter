@@ -1,0 +1,5 @@
+[client.{{ username }}]
+        key = {{ key }}
+        caps mon = "allow r"
+        caps osd = "allow rwx"
+
