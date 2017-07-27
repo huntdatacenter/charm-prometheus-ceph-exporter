@@ -211,7 +211,7 @@
     "layer.yaml": [
       "prometheus-ceph-exporter", 
       "dynamic", 
-      "b65e1f9dc9afaa7ca5e72a5e5d107501ece3f77ea4d5cfb99fe98f6144a4bebd"
+      "65892cbbe6886652a73c1b7a463a5400d2f2e0338ca7c88d5312d6f6cf5bee56"
     ], 
     "lib/charms/layer/__init__.py": [
       "layer:basic", 

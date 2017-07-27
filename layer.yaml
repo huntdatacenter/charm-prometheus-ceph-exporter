@@ -1,8 +1,8 @@
 "options":
   "basic":
     "use_venv": !!bool "true"
+    "include_system_packages": !!bool "true"
     "packages": []
-    "include_system_packages": !!bool "false"
   "snap": {}
   "prometheus-ceph-exporter": {}
 "includes":
