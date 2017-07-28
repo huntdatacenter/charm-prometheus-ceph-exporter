@@ -3,7 +3,7 @@
 ARGS="-ceph.user {{ username }} {{ daemon_arguments }}"
 {%- else -%}
 ARGS="{{ daemon_arguments }}"
-{% endif -%}
+{% endif %}
 
 # Example of the commands:
 #  -ceph.config string
