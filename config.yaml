@@ -1,27 +1,9 @@
-# Copyright 2016 Canonical Ltd.
-#
-# This file is part of the Snap layer for Juju.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#  http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-"options":
-  "snap_proxy":
-    "description": "HTTP/HTTPS web proxy for Snappy to use when accessing the snap\
-      \ store.\n"
-    "type": "string"
-    "default": ""
-  "snap_channel":
-    "default": "stable"
-    "type": "string"
-    "description": |
-      If install_method is set to "snap" this option controlls channel name.
-      Supported values are: "stable", "candidate", "beta" and "edge"
+options:
+  username:
+    description: Username to use for ceph mons - defaults to prometheus-ceph-exporter.
+    type: string
+    default: "prometheus-ceph-exporter"
+  daemon_arguments:
+    description: Daemon arguments to pass to the exporter.
+    type: string
+    default: ""

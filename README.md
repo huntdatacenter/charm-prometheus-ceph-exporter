@@ -22,6 +22,7 @@ From the MAAS host:
 # Deploy the charm
 
     juju deploy local:xenial/prometheus-ceph-exporter
+    juju add-relation prometheus-ceph-exporter ceph-mon:client
 
 To change the port, refer to the daemon_arguments provided by the snap package at:
     /var/snap/prometheus-ceph-exporter/current/daemon_arguments

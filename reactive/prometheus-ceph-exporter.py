@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import yaml
-import subprocess
+import os
 
 from charmhelpers.core import host, hookenv
 from charmhelpers.core.templating import render
@@ -21,37 +21,30 @@ from charms.reactive import (
     when, when_not, set_state, remove_state
 )
 from charms.reactive.helpers import any_file_changed, data_changed
-from charms.layer import snap
+# from charms.layer import snap
 
+from charmhelpers.fetch import (
+    apt_install,
+)
 
 SNAP_NAME = 'prometheus-ceph-exporter'
 SVC_NAME = 'snap.prometheus-ceph-exporter.ceph-exporter'
 SNAP_DATA = '/var/snap/' + SNAP_NAME + '/current/'
 PORT_DEF = 9128
 
+
 def templates_changed(tmpl_list):
     return any_file_changed(['templates/{}'.format(x) for x in tmpl_list])
-
-
-@when_not('ceph-exporter.installed')
-def install_packages():
-    hookenv.status_set('maintenance', 'Installing software')
-    config = hookenv.config()
-    channel = config.get('snap_channel', 'stable')
-    snap.install(SNAP_NAME, channel=channel, force_dangerous=False)
-    set_state('ceph-exporter.do-auth-config')
-    set_state('ceph-exporter.installed')
-    set_state('ceph-exporter.do-check-reconfig')
 
 
 def validate_config(filename):
     return yaml.safe_load(open(filename))
 
 
-@when('ceph-exporter.installed')
+@when('snap.installed.prometheus-ceph-exporter')
 @when('ceph-exporter.do-reconfig-yaml')
 def write_ceph_exporter_config_yaml():
-    config = hookenv.config()
+    # config = hookenv.config()
     hookenv.open_port(PORT_DEF)
     set_state('ceph-exporter.do-restart')
     remove_state('ceph-exporter.do-reconfig-yaml')
@@ -71,19 +64,44 @@ def check_reconfig_ceph_exporter():
     remove_state('ceph-exporter.do-check-reconfig')
 
 
-@when('ceph-exporter.do-auth-config')
-def ceph_auth_config():
-    # Working around snap confinement, creating ceph user, moving conf to snap confined environment ($SNAP_DATA)
-    hookenv.status_set('maintenance', 'Creating ceph user')
-    hookenv.log('Creating exporter ceph user')
-    subprocess.check_call(['ceph', 'auth', 'add', 'client.exporter', 'mon', "allow r"])
-    hookenv.log('Creating exporter keyring file onto {}'.format(SNAP_DATA))
-    subprocess.check_call(['ceph', 'auth', 'get', 'client.exporter', '-o', SNAP_DATA + 'ceph.client.exporter.keyring'])
-    hookenv.log('Copying ceph.conf onto {}'.format(SNAP_DATA))
-    subprocess.check_call(['cp', '/etc/ceph/ceph.conf', SNAP_DATA + 'ceph.conf'])
-    hookenv.log('Modifying snap ceph.conf to point to $SNAP_DATA')
-    subprocess.check_call(['sed', '-i', 's=/etc/ceph/=' + SNAP_DATA + '=g', SNAP_DATA + 'ceph.conf'])
-    remove_state('ceph-exporter.do-auth-config')
+@when('ceph.connected')
+def ceph_connected(ceph_client):
+    apt_install(['ceph-common', 'python-ceph'])
+
+
+@when('ceph.available')
+def ceph_ready(ceph_client):
+    username = hookenv.config('username')
+    daemon_conf = os.path.join(os.sep, SNAP_DATA, 'daemon_arguments')
+    charm_ceph_conf = os.path.join(os.sep, SNAP_DATA, 'ceph.conf')
+    cephx_key = os.path.join(os.sep, SNAP_DATA, 'ceph.client.%s.keyring' % (username))
+
+    ceph_context = {
+        'auth_supported': ceph_client.auth(),
+        'mon_hosts': ceph_client.mon_hosts(),
+        'service_name': username,
+        'ringpath': SNAP_DATA,
+    }
+
+    # Write out the ceph.conf
+    render('ceph.conf', charm_ceph_conf, ceph_context)
+
+    ceph_key_context = {
+        'key': str(ceph_client.key()),
+        'username': username,
+    }
+
+    # Write out the cephx_key also
+    render('ceph.keyring', cephx_key, ceph_key_context)
+
+    daemon_context = {
+        'daemon_arguments': hookenv.config('daemon_arguments'),
+        'username': username,
+    }
+
+    # Write out the daemon.arguments file
+    render('daemon_arguments', daemon_conf, daemon_context)
+
 
 @when('ceph-exporter.do-restart')
 def restart_ceph_exporter():
@@ -100,6 +118,6 @@ def restart_ceph_exporter():
 
 # Relations
 @when('ceph-exporter.started')
-@when('ceph-exporter.available') # Relation name is "ceph-exporter"
+@when('ceph-exporter.available')  # Relation name is "ceph-exporter"
 def configure_ceph_exporter_relation(target):
     target.configure(PORT_DEF)
