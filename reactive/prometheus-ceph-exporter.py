@@ -21,7 +21,7 @@ from charms.reactive import (
     when, when_not, set_state, remove_state
 )
 from charms.reactive.helpers import any_file_changed, data_changed
-from charms.layer import snap
+# from charms.layer import snap
 
 from charmhelpers.fetch import (
     apt_install,
@@ -37,21 +37,11 @@ def templates_changed(tmpl_list):
     return any_file_changed(['templates/{}'.format(x) for x in tmpl_list])
 
 
-@when_not('ceph-exporter.installed')
-def install_packages():
-    hookenv.status_set('maintenance', 'Installing software')
-    config = hookenv.config()
-    channel = config.get('snap_channel', 'stable')
-    snap.install(SNAP_NAME, channel=channel, force_dangerous=False)
-    set_state('ceph-exporter.installed')
-    set_state('ceph-exporter.do-check-reconfig')
-
-
 def validate_config(filename):
     return yaml.safe_load(open(filename))
 
 
-@when('ceph-exporter.installed')
+@when('snap.installed.prometheus-ceph-exporter')
 @when('ceph-exporter.do-reconfig-yaml')
 def write_ceph_exporter_config_yaml():
     # config = hookenv.config()
