@@ -1,0 +1,332 @@
+{
+  "layers": [
+    "layer:basic", 
+    "layer:snap", 
+    "prometheus-ceph-exporter", 
+    "interface:http", 
+    "interface:ceph-client", 
+    "build"
+  ], 
+  "signatures": {
+    ".build.manifest": [
+      "build", 
+      "dynamic", 
+      "unchecked"
+    ], 
+    ".gitignore": [
+      "layer:snap", 
+      "static", 
+      "cafb5f0bc3ca8e22ee6736efd09046d3cb0634908d64294dc48fa504c9316126"
+    ], 
+    "Makefile": [
+      "layer:basic", 
+      "static", 
+      "b7ab3a34e5faf79b96a8632039a0ad0aa87f2a9b5f0ba604e007cafb22190301"
+    ], 
+    "README.md": [
+      "prometheus-ceph-exporter", 
+      "static", 
+      "b1964617bfb6c0631003864ef7e2d1c847be011b2c4f6ab36174dad6b22aa02a"
+    ], 
+    "bin/layer_option": [
+      "prometheus-ceph-exporter", 
+      "static", 
+      "621b556cd208005e131e9f648859294347da9376609745a73ca2e808dd2032f9"
+    ], 
+    "config.yaml": [
+      "prometheus-ceph-exporter", 
+      "dynamic", 
+      "916399bc5ae4aaacd9cdb848876e1b59d6d0af53a75448f10e0ec4a9baf46f1d"
+    ], 
+    "copyright": [
+      "prometheus-ceph-exporter", 
+      "static", 
+      "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    ], 
+    "hooks/ceph-exporter-relation-broken": [
+      "interface:http", 
+      "dynamic", 
+      "f976e7ff3e347d44dac22626507f2a88042ba913aeebca7ffdcd5f6179b83683"
+    ], 
+    "hooks/ceph-exporter-relation-changed": [
+      "interface:http", 
+      "dynamic", 
+      "f976e7ff3e347d44dac22626507f2a88042ba913aeebca7ffdcd5f6179b83683"
+    ], 
+    "hooks/ceph-exporter-relation-departed": [
+      "interface:http", 
+      "dynamic", 
+      "f976e7ff3e347d44dac22626507f2a88042ba913aeebca7ffdcd5f6179b83683"
+    ], 
+    "hooks/ceph-exporter-relation-joined": [
+      "interface:http", 
+      "dynamic", 
+      "f976e7ff3e347d44dac22626507f2a88042ba913aeebca7ffdcd5f6179b83683"
+    ], 
+    "hooks/ceph-relation-broken": [
+      "interface:ceph-client", 
+      "dynamic", 
+      "f976e7ff3e347d44dac22626507f2a88042ba913aeebca7ffdcd5f6179b83683"
+    ], 
+    "hooks/ceph-relation-changed": [
+      "interface:ceph-client", 
+      "dynamic", 
+      "f976e7ff3e347d44dac22626507f2a88042ba913aeebca7ffdcd5f6179b83683"
+    ], 
+    "hooks/ceph-relation-departed": [
+      "interface:ceph-client", 
+      "dynamic", 
+      "f976e7ff3e347d44dac22626507f2a88042ba913aeebca7ffdcd5f6179b83683"
+    ], 
+    "hooks/ceph-relation-joined": [
+      "interface:ceph-client", 
+      "dynamic", 
+      "f976e7ff3e347d44dac22626507f2a88042ba913aeebca7ffdcd5f6179b83683"
+    ], 
+    "hooks/config-changed": [
+      "layer:basic", 
+      "static", 
+      "f976e7ff3e347d44dac22626507f2a88042ba913aeebca7ffdcd5f6179b83683"
+    ], 
+    "hooks/hook.template": [
+      "layer:basic", 
+      "static", 
+      "f976e7ff3e347d44dac22626507f2a88042ba913aeebca7ffdcd5f6179b83683"
+    ], 
+    "hooks/install": [
+      "layer:basic", 
+      "static", 
+      "f976e7ff3e347d44dac22626507f2a88042ba913aeebca7ffdcd5f6179b83683"
+    ], 
+    "hooks/leader-elected": [
+      "layer:basic", 
+      "static", 
+      "f976e7ff3e347d44dac22626507f2a88042ba913aeebca7ffdcd5f6179b83683"
+    ], 
+    "hooks/leader-settings-changed": [
+      "layer:basic", 
+      "static", 
+      "f976e7ff3e347d44dac22626507f2a88042ba913aeebca7ffdcd5f6179b83683"
+    ], 
+    "hooks/relations/ceph-client/.gitignore": [
+      "interface:ceph-client", 
+      "static", 
+      "9bc89eb4096cba590f020c6fd1bdf67f861c0d36a35c6a6a55a1d797d1ab1f0e"
+    ], 
+    "hooks/relations/ceph-client/.project": [
+      "interface:ceph-client", 
+      "static", 
+      "9576771b127526aae9006690e9a4f20d9935bb0595ae9f91783fdf2d87605223"
+    ], 
+    "hooks/relations/ceph-client/.pydevproject": [
+      "interface:ceph-client", 
+      "static", 
+      "af169a8563b28267076639ba60b9e854438dc2198330d39938c54fc9ca8eda93"
+    ], 
+    "hooks/relations/ceph-client/README.md": [
+      "interface:ceph-client", 
+      "static", 
+      "475c8bff2d3041b7e22f4870bb6c8d73ccd88a53f53471dddae8ec5572b6caa2"
+    ], 
+    "hooks/relations/ceph-client/__init__.py": [
+      "interface:ceph-client", 
+      "static", 
+      "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    ], 
+    "hooks/relations/ceph-client/interface.yaml": [
+      "interface:ceph-client", 
+      "static", 
+      "81cdf7466f28566ae332b319acfd85b017298ee93cd846c3838a20334b9f1258"
+    ], 
+    "hooks/relations/ceph-client/provides.py": [
+      "interface:ceph-client", 
+      "static", 
+      "5ee12f84d79e22cd3d60e092d1dba178c9b90bbd38166f25c5d12443d7b27422"
+    ], 
+    "hooks/relations/ceph-client/requires.py": [
+      "interface:ceph-client", 
+      "static", 
+      "93d240f032234a1eceeea8d80494f164ca9cb74fa8d814019ebcc30862f3dfc6"
+    ], 
+    "hooks/relations/ceph-client/test-requirements.txt": [
+      "interface:ceph-client", 
+      "static", 
+      "383adb6a80ff7214d0c6e5e560cbf2a53e77775d7ef271de791c7a392d6859d2"
+    ], 
+    "hooks/relations/ceph-client/tox.ini": [
+      "interface:ceph-client", 
+      "static", 
+      "c3c51567b9102197ca340ffa43cad564da23d6d69a0f059711fe10fba7de9104"
+    ], 
+    "hooks/relations/http/README.md": [
+      "interface:http", 
+      "static", 
+      "9c95320ad040745374fc03e972077f52c27e07eb0386ec93ae19bd50dca24c0d"
+    ], 
+    "hooks/relations/http/__init__.py": [
+      "interface:http", 
+      "static", 
+      "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    ], 
+    "hooks/relations/http/interface.yaml": [
+      "interface:http", 
+      "static", 
+      "d0b64038b85b7791ee4f3a42d73ffc8c208f206f73f899cbf33a519d12f9ad13"
+    ], 
+    "hooks/relations/http/provides.py": [
+      "interface:http", 
+      "static", 
+      "eb4b01fc022cafbb6e67cb200f497ab3aeee4b954b1b9ff2be1d8e64d1a4be20"
+    ], 
+    "hooks/relations/http/requires.py": [
+      "interface:http", 
+      "static", 
+      "70188554d673bff61578f4e601a78a91efb4736df727507e984be5ca19335f82"
+    ], 
+    "hooks/start": [
+      "layer:basic", 
+      "static", 
+      "f976e7ff3e347d44dac22626507f2a88042ba913aeebca7ffdcd5f6179b83683"
+    ], 
+    "hooks/stop": [
+      "layer:basic", 
+      "static", 
+      "f976e7ff3e347d44dac22626507f2a88042ba913aeebca7ffdcd5f6179b83683"
+    ], 
+    "hooks/update-status": [
+      "layer:basic", 
+      "static", 
+      "f976e7ff3e347d44dac22626507f2a88042ba913aeebca7ffdcd5f6179b83683"
+    ], 
+    "hooks/upgrade-charm": [
+      "layer:basic", 
+      "static", 
+      "8fb6559bf4d4b7cdf1b857564c1d7265df98e863a4746fcbae092f141e59d97e"
+    ], 
+    "icon.svg": [
+      "prometheus-ceph-exporter", 
+      "static", 
+      "ab80faa83df36e0e40fedc44e0cc9dea40cd2ff5ed55b2b1ee714bf9dfd0c3d1"
+    ], 
+    "layer.yaml": [
+      "prometheus-ceph-exporter", 
+      "dynamic", 
+      "b42ccee217707652ff04753c77a1a351433fd33d39e7bb545260c24439d5d20e"
+    ], 
+    "lib/charms/layer/__init__.py": [
+      "layer:basic", 
+      "static", 
+      "71a8b901f7e64a6b1b61959fc25819bafc9c9905e37a918615b9f949295095a4"
+    ], 
+    "lib/charms/layer/basic.py": [
+      "layer:basic", 
+      "static", 
+      "d09706ef3a224eb60d34366a2867c382791aa30157ab5b77eda37f29731df2e2"
+    ], 
+    "lib/charms/layer/execd.py": [
+      "layer:basic", 
+      "static", 
+      "af1f2409869f990cdb33cffc4120fb6713876e8e680ac5f064ea510bbdca1073"
+    ], 
+    "lib/charms/layer/snap.py": [
+      "layer:snap", 
+      "static", 
+      "80dfa8989118c3b56e7d18d3d515021b959b69aaf4f8230d099e62a99137f47f"
+    ], 
+    "metadata.yaml": [
+      "prometheus-ceph-exporter", 
+      "dynamic", 
+      "b7125369d29c24cf58e6bf5403522ebae8b8296b5f56db868d078884ef009b73"
+    ], 
+    "reactive/__init__.py": [
+      "prometheus-ceph-exporter", 
+      "static", 
+      "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    ], 
+    "reactive/prometheus-ceph-exporter.py": [
+      "prometheus-ceph-exporter", 
+      "static", 
+      "d679d83f8df7992c492558d404e1e6366189b442c72f39a42abcb2f089f40fbc"
+    ], 
+    "reactive/snap.py": [
+      "layer:snap", 
+      "static", 
+      "9196b3ff940cbc8ad3790768cc8d5640bd285dfc865c1cbc26a65cc79cd14141"
+    ], 
+    "requirements.txt": [
+      "layer:basic", 
+      "static", 
+      "0f1c70d27e26005a96d66ad54482877ae20f7737693c833e29dd72bd6ac24892"
+    ], 
+    "templates/ceph.conf": [
+      "prometheus-ceph-exporter", 
+      "static", 
+      "4656b1c0ec0788e145aab185dc91e49e63c949c3d0d5ae410c48f38daa6fcb59"
+    ], 
+    "templates/ceph.keyring": [
+      "prometheus-ceph-exporter", 
+      "static", 
+      "2324e0067f5682e56025545f8372816942dd19c68a3309d8a2a022d32ddf02ce"
+    ], 
+    "templates/daemon_arguments": [
+      "prometheus-ceph-exporter", 
+      "static", 
+      "cb81f48dbfff6df60a6dcfecb7baf2817eb07dfe2c8f1b639d4fecd350aeecce"
+    ], 
+    "tox.ini": [
+      "layer:snap", 
+      "static", 
+      "dc6db1aff7cdbbc459a35cba40ec6110d91ad62a11f54784d11cf7c47fac53ee"
+    ], 
+    "wheelhouse/Jinja2-2.9.6.tar.gz": [
+      "layer:basic", 
+      "dynamic", 
+      "ddaa01a212cd6d641401cb01b605f4a4d9f37bfc93043d7f760ec70fb99ff9ff"
+    ], 
+    "wheelhouse/MarkupSafe-1.0.tar.gz": [
+      "layer:basic", 
+      "dynamic", 
+      "a6be69091dac236ea9c6bc7d012beab42010fa914c459791d627dad4910eb665"
+    ], 
+    "wheelhouse/PyYAML-3.12.tar.gz": [
+      "layer:basic", 
+      "dynamic", 
+      "592766c6303207a20efc445587778322d7f73b161bd994f227adaa341ba212ab"
+    ], 
+    "wheelhouse/Tempita-0.5.2.tar.gz": [
+      "layer:basic", 
+      "dynamic", 
+      "cacecf0baa674d356641f1d406b8bff1d756d739c46b869a54de515d08e6fc9c"
+    ], 
+    "wheelhouse/charmhelpers-0.17.0.tar.gz": [
+      "layer:basic", 
+      "dynamic", 
+      "232f9ee252c58e9357aaa74d14d351e786716fa0cec3f496f74c40ad0bc6a0b5"
+    ], 
+    "wheelhouse/charms.reactive-0.4.7.tar.gz": [
+      "layer:basic", 
+      "dynamic", 
+      "f023f5aef267786db1be51209610487171ba56e848f7b1c49877b06337000256"
+    ], 
+    "wheelhouse/netaddr-0.7.19.tar.gz": [
+      "layer:basic", 
+      "dynamic", 
+      "38aeec7cdd035081d3a4c306394b19d677623bf76fa0913f6695127c7753aefd"
+    ], 
+    "wheelhouse/pip-8.1.2.tar.gz": [
+      "layer:basic", 
+      "dynamic", 
+      "4d24b03ffa67638a3fa931c09fd9e0273ffa904e95ebebe7d4b1a54c93d7b732"
+    ], 
+    "wheelhouse/pyaml-17.7.2.tar.gz": [
+      "layer:basic", 
+      "dynamic", 
+      "e2de6b5ea87fd72ca266879995ac3f5394b4e66a74c47b55b6044b0578ce4f8c"
+    ], 
+    "wheelhouse/six-1.10.0.tar.gz": [
+      "layer:basic", 
+      "dynamic", 
+      "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
+    ]
+  }
+}
