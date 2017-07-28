@@ -246,7 +246,7 @@
     "reactive/prometheus-ceph-exporter.py": [
       "prometheus-ceph-exporter", 
       "static", 
-      "5f3a9aeea84c845da7af25aaa7d1b32ae4f72c3d0d9d3bd3476257d99ddb54a3"
+      "460082e8df45591b8b0fafa64691bcd10968597583be7895000501e785238645"
     ], 
     "reactive/snap.py": [
       "layer:snap", 

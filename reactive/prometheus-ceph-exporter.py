@@ -106,6 +106,7 @@ def ceph_ready(ceph_client):
 
     daemon_context = {
         'daemon_arguments': hookenv.config('daemon_arguments'),
+        'username': username,
     }
 
     # Write out the daemon.arguments file
