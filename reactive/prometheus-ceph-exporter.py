@@ -18,7 +18,7 @@ import os
 from charmhelpers.core import host, hookenv
 from charmhelpers.core.templating import render
 from charms.reactive import (
-    when, when_not, set_state, remove_state
+    when, when_any, set_state, remove_state
 )
 from charms.reactive.helpers import any_file_changed, data_changed
 # from charms.layer import snap
@@ -41,8 +41,8 @@ def validate_config(filename):
     return yaml.safe_load(open(filename))
 
 
-@when('snap.installed.prometheus-ceph-exporter')
-@when('ceph-exporter.do-reconfig-yaml')
+@when_any('snap.installed.prometheus-ceph-exporter',
+          'ceph-exporter.do-reconfig-yaml')
 def write_ceph_exporter_config_yaml():
     # config = hookenv.config()
     hookenv.open_port(PORT_DEF)
