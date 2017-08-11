@@ -21,6 +21,7 @@ from charms.reactive import (
     when, when_any, set_state, remove_state
 )
 from charms.reactive.helpers import any_file_changed, data_changed
+from charmhelpers.contrib.charmsupport import nrpe
 # from charms.layer import snap
 
 from charmhelpers.fetch import (
@@ -121,3 +122,14 @@ def restart_ceph_exporter():
 @when('ceph-exporter.available')  # Relation name is "ceph-exporter"
 def configure_ceph_exporter_relation(target):
     target.configure(PORT_DEF)
+
+
+@when('nrpe-external-master.available')
+def update_nrpe_config(svc):
+    hostname = nrpe.get_nagios_hostname()
+    nrpe_setup = nrpe.NRPE(hostname=hostname)
+    nrpe_setup.add_check('prometheus_ceph_exporter_http',
+                         'Prometheus Ceph Exporter HTTP check',
+                         'check_http -I 127.0.0.1 -p {} -u /metrics'.format(PORT_DEF)
+                         )
+    nrpe_setup.write()

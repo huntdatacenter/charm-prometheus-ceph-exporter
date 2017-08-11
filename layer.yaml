@@ -1,4 +1,4 @@
-includes: ['layer:basic', 'interface:http', 'layer:snap', 'interface:ceph-client']
+includes: ['layer:basic', 'interface:http', 'layer:snap', 'interface:ceph-client', 'interface:nrpe-external-master']
 repo: 'https://git.launchpad.net/prometheus-ceph-exporter-charm'
 ignore: ['.*.swp' ]
 options:
