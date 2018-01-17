@@ -1,4 +1,11 @@
 options:
+  access-network:
+    type: string
+    default:
+    description: |
+      The IP address and netmask of the 'access' network (e.g. 192.168.0.0/24)
+      .
+      This network will be used for access to the ceph-exporter metrics.
   username:
     description: Username to use for ceph mons - defaults to prometheus-ceph-exporter.
     type: string

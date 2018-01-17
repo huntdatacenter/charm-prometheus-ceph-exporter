@@ -22,6 +22,7 @@ from charms.reactive import (
 )
 from charms.reactive.helpers import any_file_changed, data_changed
 from charmhelpers.contrib.charmsupport import nrpe
+from charmhelpers.contrib.network.ip import get_address_in_network
 # from charms.layer import snap
 
 from charmhelpers.fetch import (
@@ -117,11 +118,41 @@ def restart_ceph_exporter():
     remove_state('ceph-exporter.do-restart')
 
 
+def get_exporter_host(interface='ceph-exporter'):
+    """Get address of local ceph-exporter host for use by http clients
+
+    If an access-network has been configured, expect selected address to be on
+    that network. If none can be found, revert to primary address.
+
+    If network spaces (Juju >= 2.0) are supported, use network-get to retrieve
+    the network binding for the interface
+
+    @param interface: Network space binding to check
+                      Usually the relationship name
+    @returns IP for use with http clients
+    """
+    access_network = hookenv.config('access-network')
+    if access_network:
+        return get_address_in_network(access_network)
+    else:
+        try:
+            # NOTE(aluria)
+            # Try to use network spaces to resolve binding for interface, and
+            # to resolve the IP
+            return hookenv.network_get_primary_address(interface)
+        except NotImplementedError:
+            # NOTE(aluria): skip - fallback to previous behaviour (in OS Charms)
+            pass
+
+    return hookenv.unit_get('private-address')
+
+
 # Relations
 @when('ceph-exporter.started')
 @when('ceph-exporter.available')  # Relation name is "ceph-exporter"
 def configure_ceph_exporter_relation(target):
-    target.configure(PORT_DEF)
+    hostname = get_exporter_host()
+    target.configure(PORT_DEF, hostname=hostname)
 
 
 @when('nrpe-external-master.available')
