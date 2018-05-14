@@ -21,3 +21,6 @@ provides:
 requires:
   ceph:
     interface: ceph-client
+extra-bindings:
+  public:
+  cluster:
