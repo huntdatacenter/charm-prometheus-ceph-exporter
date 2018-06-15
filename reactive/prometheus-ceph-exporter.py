@@ -66,15 +66,16 @@ def open_port():
 @when('ceph.available')
 @when_not('exporter.started')
 def configure_exporter(ceph_client):
-    username = hookenv.config('username')
+    service_name = hookenv.service_name()
     daemon_conf = os.path.join(os.sep, SNAP_DATA, 'daemon_arguments')
     charm_ceph_conf = os.path.join(os.sep, SNAP_DATA, 'ceph.conf')
-    cephx_key = os.path.join(os.sep, SNAP_DATA, 'ceph.client.%s.keyring' % (username))
+    cephx_key = os.path.join(os.sep, SNAP_DATA, 'ceph.client.%s.keyring' %
+                             (service_name))
 
     ceph_context = {
         'auth_supported': ceph_client.auth(),
         'mon_hosts': ceph_client.mon_hosts(),
-        'service_name': username,
+        'service_name': service_name,
         'ringpath': SNAP_DATA,
     }
 
@@ -83,7 +84,7 @@ def configure_exporter(ceph_client):
 
     ceph_key_context = {
         'key': str(ceph_client.key()),
-        'username': username,
+        'service_name': service_name,
     }
 
     # Write out the cephx_key also
@@ -91,7 +92,7 @@ def configure_exporter(ceph_client):
 
     daemon_context = {
         'daemon_arguments': hookenv.config('daemon_arguments'),
-        'username': username,
+        'service_name': service_name,
     }
 
     # Write out the daemon.arguments file

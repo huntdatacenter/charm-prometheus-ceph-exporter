@@ -1,4 +1,4 @@
-[client.{{ username }}]
+[client.{{ service_name }}]
         key = {{ key }}
         caps mon = "allow r"
         caps osd = "allow rwx"

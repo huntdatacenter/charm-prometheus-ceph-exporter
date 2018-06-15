@@ -1,6 +1,6 @@
 # Set the command-line arguments to pass to the ceph_exporter daemon
-{% if username is defined %}
-ARGS="-ceph.user {{ username }} {{ daemon_arguments }}"
+{% if service_name is defined %}
+ARGS="-ceph.user {{ service_name }} {{ daemon_arguments }}"
 {%- else -%}
 ARGS="{{ daemon_arguments }}"
 {% endif %}
