@@ -10,6 +10,7 @@ tags:
   - ceph
 series:
   - xenial
+  - bionic
   - trusty
 subordinate: false
 provides:
