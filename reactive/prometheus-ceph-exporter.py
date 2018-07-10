@@ -14,16 +14,19 @@
 
 import yaml
 import os
+import time
 
 from charmhelpers.core import host, hookenv
 from charmhelpers.core.templating import render
 from charms.reactive import (
-    when, when_any, set_state, remove_state
+    when,
+    when_not,
+    set_state,
+    remove_state,
 )
-from charms.reactive.helpers import any_file_changed, data_changed
+from charms.reactive.helpers import any_file_changed
 from charmhelpers.contrib.charmsupport import nrpe
 from charmhelpers.contrib.network.ip import get_address_in_network
-# from charms.layer import snap
 
 from charmhelpers.fetch import (
     apt_install,
@@ -35,6 +38,10 @@ SNAP_DATA = '/var/snap/' + SNAP_NAME + '/current/'
 PORT_DEF = 9128
 
 
+class ServiceError(Exception):
+    pass
+
+
 def templates_changed(tmpl_list):
     return any_file_changed(['templates/{}'.format(x) for x in tmpl_list])
 
@@ -43,45 +50,32 @@ def validate_config(filename):
     return yaml.safe_load(open(filename))
 
 
-@when_any('snap.installed.prometheus-ceph-exporter',
-          'ceph-exporter.do-reconfig-yaml')
-def write_ceph_exporter_config_yaml():
-    # config = hookenv.config()
+@when_not('ceph-libs-installed')
+def install_libs():
+    apt_install(['ceph-common', 'python-ceph'], fatal=True)
+    set_state('ceph-libs-installed')
+
+
+@when('snap.installed.prometheus-ceph-exporter')
+@when_not('ports-open')
+def open_port():
     hookenv.open_port(PORT_DEF)
-    set_state('ceph-exporter.do-restart')
-    remove_state('ceph-exporter.do-reconfig-yaml')
-
-
-@when('ceph-exporter.started')
-def check_config():
-    set_state('ceph-exporter.do-check-reconfig')
-
-
-@when('ceph-exporter.do-check-reconfig')
-def check_reconfig_ceph_exporter():
-    config = hookenv.config()
-    if data_changed('ceph-exporter.config', config):
-        set_state('ceph-exporter.do-reconfig-yaml')
-
-    remove_state('ceph-exporter.do-check-reconfig')
-
-
-@when('ceph.connected')
-def ceph_connected(ceph_client):
-    apt_install(['ceph-common', 'python-ceph'])
+    set_state('ports-open')
 
 
 @when('ceph.available')
-def ceph_ready(ceph_client):
-    username = hookenv.config('username')
+@when_not('exporter.started')
+def configure_exporter(ceph_client):
+    service_name = hookenv.service_name()
     daemon_conf = os.path.join(os.sep, SNAP_DATA, 'daemon_arguments')
     charm_ceph_conf = os.path.join(os.sep, SNAP_DATA, 'ceph.conf')
-    cephx_key = os.path.join(os.sep, SNAP_DATA, 'ceph.client.%s.keyring' % (username))
+    cephx_key = os.path.join(os.sep, SNAP_DATA, 'ceph.client.%s.keyring' %
+                             (service_name))
 
     ceph_context = {
         'auth_supported': ceph_client.auth(),
         'mon_hosts': ceph_client.mon_hosts(),
-        'service_name': username,
+        'service_name': service_name,
         'ringpath': SNAP_DATA,
     }
 
@@ -90,7 +84,7 @@ def ceph_ready(ceph_client):
 
     ceph_key_context = {
         'key': str(ceph_client.key()),
-        'username': username,
+        'service_name': service_name,
     }
 
     # Write out the cephx_key also
@@ -98,24 +92,21 @@ def ceph_ready(ceph_client):
 
     daemon_context = {
         'daemon_arguments': hookenv.config('daemon_arguments'),
-        'username': username,
+        'service_name': service_name,
     }
 
     # Write out the daemon.arguments file
     render('daemon_arguments', daemon_conf, daemon_context)
 
-
-@when('ceph-exporter.do-restart')
-def restart_ceph_exporter():
-    if not host.service_running(SVC_NAME):
-        hookenv.log('Starting {}...'.format(SVC_NAME))
-        host.service_start(SVC_NAME)
+    # Start ceph-exporter
+    hookenv.log('Starting {}...'.format(SVC_NAME))
+    host.service_start(SVC_NAME)
+    time.sleep(10)  # service is type=simple can't tell if it actually started
+    if host.service_running(SVC_NAME):
+        hookenv.status_set('active', 'Running')
     else:
-        hookenv.log('Restarting {}, config file changed...'.format(SVC_NAME))
-        host.service_restart(SVC_NAME)
-    hookenv.status_set('active', 'Ready')
-    set_state('ceph-exporter.started')
-    remove_state('ceph-exporter.do-restart')
+        raise ServiceError("Service didn't start: {}".format(SVC_NAME))
+    set_state('exporter.started')
 
 
 def get_exporter_host(interface='ceph-exporter'):
@@ -148,11 +139,19 @@ def get_exporter_host(interface='ceph-exporter'):
 
 
 # Relations
-@when('ceph-exporter.started')
+@when('exporter.started')
 @when('ceph-exporter.available')  # Relation name is "ceph-exporter"
 def configure_ceph_exporter_relation(target):
     hostname = get_exporter_host()
     target.configure(PORT_DEF, hostname=hostname)
+
+
+@when('exporter.started')
+@when_not('ceph.connected')
+def mon_relation_broken():
+    host.service_stop(SVC_NAME)
+    hookenv.status_set('blocked', 'No ceph-mon relation')
+    remove_state('exporter.started')
 
 
 @when('nrpe-external-master.available')
