@@ -27,3 +27,24 @@ From the MAAS host:
 To change the port, refer to the daemon_arguments provided by the snap package at:
     /var/snap/prometheus-ceph-exporter/current/daemon_arguments
 
+# Testing
+
+This charm implements amulet testing which can be run to deploy and verify the
+charm. With an available environment run the tests with the command:
+
+    tox -e amulet
+
+Amulet tests must be run from within a fully built charm folder. If you have
+downloaded this charm from source instead of the charmstore it is a layered
+charm and must be built and tests run from the build directory. Be aware timers
+are used to allow for deployment, if your environment has a particularly slow
+time to deploy nodes or blocks packages from installing this can cause failure
+for the amulet test.
+
+Unit testing  has been stubbed out but does not include comprehensive tests at
+this time. When available unit tests can be run with:
+
+    tox -e unit
+
+Unit tests do not deploy the charm and do not require building prior to running
+the test suite.
