@@ -41,6 +41,12 @@ are used to allow for deployment, if your environment has a particularly slow
 time to deploy nodes or blocks packages from installing this can cause failure
 for the amulet test.
 
+Amulet tests also require a working juju environment and juju-deployer to run.
+Juju can be installed via snap and amulet via pip with with:
+
+    sudo snap install juju --classic
+    sudo pip install bundletester
+
 Unit testing  has been stubbed out but does not include comprehensive tests at
 this time. When available unit tests can be run with:
 
