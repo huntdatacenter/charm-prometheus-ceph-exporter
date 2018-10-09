@@ -25,3 +25,9 @@ requires:
 extra-bindings:
   public:
   cluster:
+resources:
+  prometheus-ceph-exporter:
+    type: file
+    filename": prometheus-ceph-exporter.snap
+    description: Prometheus Ceph Exporter snap
+subordinate: !!bool false
