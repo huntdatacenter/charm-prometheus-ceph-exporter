@@ -6,5 +6,7 @@ options:
     use_venv: true
     include_system_packages: true
   snap:
+    core:
+      channel: stable
     prometheus-ceph-exporter:
       channel: stable

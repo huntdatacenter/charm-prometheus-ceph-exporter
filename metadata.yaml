@@ -30,4 +30,7 @@ resources:
     type: file
     filename: prometheus-ceph-exporter.snap
     description: Prometheus Ceph Exporter snap
-subordinate: !!bool false
+  core:
+    type: file
+    filename: core.snap
+    description: Core snap, prerequisite of other snaps

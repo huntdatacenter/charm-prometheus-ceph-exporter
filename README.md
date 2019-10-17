@@ -27,6 +27,20 @@ From the MAAS host:
 To change the port, refer to the daemon_arguments provided by the snap package at:
     /var/snap/prometheus-ceph-exporter/current/daemon_arguments
 
+# Juju resources
+
+The charm supports juju resources, which can be handy in offline deployments.
+Prefetch the snaps:
+
+    snap download core
+    snap download prometheus-ceph-exporter
+
+Provide the snaps as resources to the application:
+
+    juju deploy cs:prometheus-ceph-exporter \
+    --resource prometheus-ceph-exporter=prometheus-ceph-exporter_20.snap \
+    --resource core=core_7917.snap
+
 # Testing
 
 This charm implements amulet testing which can be run to deploy and verify the
