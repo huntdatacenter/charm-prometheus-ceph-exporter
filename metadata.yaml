@@ -1,6 +1,6 @@
 name: prometheus-ceph-exporter
 summary: Ceph exporter for Prometheus
-maintainer: Prometheus Charmers <prometheus-charmers@lists.launchpad.net>
+maintainer: Llama (LMA) Charmers <llama-charmers@lists.ubuntu.com> 
 description: |
   This is an exporter that exposes information gathered from Ceph
   for use by the Prometheus monitoring system.
