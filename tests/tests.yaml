@@ -1,12 +1,12 @@
 charm_name: prometheus-ceph-exporter
 gate_bundles:
-  - bionic
   - focal
+  - bionic
   - xenial
 smoke_bundles:
-  - bionic
+  - focal
 dev_bundles:
-  - bionic
+  - focal
 tests:
   - tests.test_prometheus_ceph_exporter.CharmOperationTest
 target_deploy_status:

@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 """Encapsulate prometheus-ceph-exporter testing."""
 import logging
 import time
@@ -5,20 +7,19 @@ import unittest
 
 import zaza.model as model
 
-
 CURL_TIMEOUT = 180
 REQ_TIMEOUT = 12
 DEFAULT_API_PORT = "9128"
-DEFAULT_API_URL = "/"
+DEFAULT_API_URL = "/metrics"
 
 
-class BasePrometheuscephExporterTest(unittest.TestCase):
+class BasePrometheusCephExporterTest(unittest.TestCase):
     """Base for Prometheus-ceph-exporter charm tests."""
 
     @classmethod
     def setUpClass(cls):
         """Set up tests."""
-        super(BasePrometheuscephExporterTest, cls).setUpClass()
+        super(BasePrometheusCephExporterTest, cls).setUpClass()
         cls.model_name = model.get_juju_model()
         cls.application_name = "prometheus-ceph-exporter"
         cls.lead_unit_name = model.get_lead_unit_name(
@@ -30,7 +31,7 @@ class BasePrometheuscephExporterTest(unittest.TestCase):
         cls.prometheus_ceph_exporter_ip = model.get_app_ips(cls.application_name)[0]
 
 
-class CharmOperationTest(BasePrometheuscephExporterTest):
+class CharmOperationTest(BasePrometheusCephExporterTest):
     """Verify operations."""
 
     def test_01_api_ready(self):

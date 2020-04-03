@@ -1,12 +1,12 @@
-includes: ['layer:basic', 'interface:http', 'layer:snap', 'interface:ceph-client', 'interface:nrpe-external-master']
+includes: 
+  - layer:basic
+  - interface:http
+  - layer:snap
+  - interface:ceph-client
+  - interface:nrpe-external-master
+  - interface:grafana-dashboard
 repo: 'https://git.launchpad.net/prometheus-ceph-exporter-charm'
 ignore: ['.*.swp' ]
 options:
   basic:
     use_venv: true
-    include_system_packages: true
-  snap:
-    core:
-      channel: stable
-    prometheus-ceph-exporter:
-      channel: stable

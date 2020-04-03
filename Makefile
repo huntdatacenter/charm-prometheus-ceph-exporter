@@ -40,7 +40,7 @@ build:
 		CHARM_BUILD_DIR=$(CHARM_BUILD_DIR) charm build . --force
 
 release: clean build
-	@echo "Charm is built at $(CHARM_BUILD_DIR)/prometheus-openstack-exporter"
+	@echo "Charm is built at $(CHARM_BUILD_DIR)/prometheus-ceph-exporter"
 
 clean:
 	@echo "Cleaning files"

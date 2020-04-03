@@ -20,6 +20,8 @@ provides:
   nrpe-external-master:
     interface: nrpe-external-master
     scope: container
+  dashboards:
+    interface: grafana-dashboard
 requires:
   ceph:
     interface: ceph-client
@@ -35,3 +37,9 @@ resources:
     type: file
     filename: core.snap
     description: Core snap, prerequisite of other snaps
+  dashboards:
+    type: file
+    filename: grafana-dashboards.zip
+    description:
+      Zip file to provide grafana dashboards
+

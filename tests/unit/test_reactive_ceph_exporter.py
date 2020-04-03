@@ -48,6 +48,7 @@ class MockCephClient:
 @mock.patch("reactive.prometheus_ceph_exporter.hookenv.status_set")
 @mock.patch("reactive.prometheus_ceph_exporter.hookenv.unit_get")
 @mock.patch("reactive.prometheus_ceph_exporter.host.service_start")
+@mock.patch("reactive.prometheus_ceph_exporter.snap.install")
 @mock.patch("reactive.prometheus_ceph_exporter.host.service_running")
 @mock.patch("reactive.prometheus_ceph_exporter.hookenv.config")
 class TestcephExporterContext(unittest.TestCase):
@@ -103,13 +104,22 @@ class TestcephExporterContext(unittest.TestCase):
         self.mock_render.start()
         self.addCleanup(self.mock_render.stop)
 
-    def test_basic_config(self, _mock_hookenv_config, _mock_service_running, *args):
+    def test_basic_config(
+            self,
+            _mock_hookenv_config,
+            _mock_service_running,
+            _mock_snap_install,
+            _mock_service_start,
+            *args
+    ):
         config = self.def_config
         config.update(
             {"daemon_arguments": "foo_arguments"}
         )
         _mock_hookenv_config.return_value = config
         _mock_service_running.return_value = True
+        _mock_service_start.return_value = True
+        _mock_snap_install.return_value = True
         ceph_client = MockCephClient()
         reactive.prometheus_ceph_exporter.configure_exporter(ceph_client)
         # Read the rendered files before the asserts or the tmpfile is removed
