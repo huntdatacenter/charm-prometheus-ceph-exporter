@@ -9,8 +9,9 @@ tags:
   - prometheus
   - ceph
 series:
-  - xenial
+  - focal
   - bionic
+  - xenial
   - trusty
 subordinate: false
 provides:
