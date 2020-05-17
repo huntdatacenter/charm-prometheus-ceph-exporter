@@ -47,7 +47,6 @@ class MockCephClient:
 @mock.patch("os.fchown")
 @mock.patch("reactive.prometheus_ceph_exporter.hookenv.status_set")
 @mock.patch("reactive.prometheus_ceph_exporter.hookenv.unit_get")
-@mock.patch("reactive.prometheus_ceph_exporter.apt_install")
 @mock.patch("reactive.prometheus_ceph_exporter.host.service_start")
 @mock.patch("reactive.prometheus_ceph_exporter.host.service_running")
 @mock.patch("reactive.prometheus_ceph_exporter.hookenv.config")
