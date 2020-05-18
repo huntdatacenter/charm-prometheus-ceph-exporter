@@ -1,0 +1,34 @@
+series: focal
+applications:
+  prometheus-ceph-exporter:
+    num_units: 1
+  nrpe:
+    charm: cs:nrpe
+  prometheus:
+    charm: cs:prometheus2
+    num_units: 1
+  ceph-mon:
+    charm: cs:ceph-mon
+    num_units: 1
+    series: bionic
+    options:
+      expected-osd-count: 3
+      monitor-count: 1
+  ceph-osd:
+    charm: cs:ceph-osd
+    series: bionic
+    num_units: 3
+    options:
+      osd-devices: /srv/osd
+
+
+relations:
+  - - prometheus-ceph-exporter:nrpe-external-master
+    - nrpe:nrpe-external-master
+  - - prometheus-ceph-exporter:ceph-exporter
+    - prometheus:target
+  - - ceph-osd:mon
+    - ceph-mon:osd
+  - - prometheus-ceph-exporter:ceph
+    - ceph-mon
+

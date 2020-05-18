@@ -5,4 +5,5 @@ flake8
 ipython
 ipdb
 charms.reactive
+netifaces
 -e git+https://git.launchpad.net/~jjo/layer-snap@cab2b604695f39a81abe47b22b8426e44e66df8f#egg=charms.layer

@@ -1,0 +1,15 @@
+charm_name: prometheus-ceph-exporter
+gate_bundles:
+  - bionic
+  - focal
+  - xenial
+smoke_bundles:
+  - bionic
+dev_bundles:
+  - bionic
+tests:
+  - tests.test_prometheus_ceph_exporter.CharmOperationTest
+target_deploy_status:
+  prometheus-ceph-exporter:
+    workload-status: active
+    workload-status-message: Running
