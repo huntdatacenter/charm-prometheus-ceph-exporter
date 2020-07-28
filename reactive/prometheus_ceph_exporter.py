@@ -21,7 +21,10 @@ from charms.reactive import (
     when_all,
     when_not,
 )
-from charms.reactive.helpers import any_file_changed
+from charms.reactive.helpers import (
+    any_file_changed,
+    data_changed,
+)
 import yaml
 
 
@@ -85,6 +88,7 @@ def configure_exporter(ceph_client):
         "service_name": service_name,
         "ringpath": SNAP_DATA,
     }
+    data_changed('mon-hosts', ceph_client.mon_hosts())
 
     # Write out the ceph.conf
     render("ceph.conf", charm_ceph_conf, ceph_context)
@@ -93,6 +97,7 @@ def configure_exporter(ceph_client):
         "key": str(ceph_client.key()),
         "service_name": service_name,
     }
+    data_changed('ceph-key', ceph_client.key())
 
     # Write out the cephx_key also
     render("ceph.keyring", cephx_key, ceph_key_context)
@@ -162,6 +167,16 @@ def mon_relation_broken():
     host.service_stop(SVC_NAME)
     hookenv.status_set("blocked", "Waiting on ceph-mon relation")
     remove_state("exporter.started")
+
+
+@when("exporter.started")
+@when("ceph.connected")
+def mon_relation_changed(ceph_client):
+    """Check if mon relation has changed data/members."""
+    if data_changed('mon-hosts', ceph_client.mon_hosts()) or data_changed('ceph-key', ceph_client.key()):
+        host.service_stop(SVC_NAME)
+        hookenv.status_set("maintenance", "Updating ceph-client configuration")
+        remove_state("exporter.started")
 
 
 @when("nrpe-external-master.available")
