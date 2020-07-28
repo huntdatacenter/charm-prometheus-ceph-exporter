@@ -13,3 +13,6 @@ target_deploy_status:
   prometheus-ceph-exporter:
     workload-status: active
     workload-status-message: Running
+  grafana:
+    workload-status: active
+    workload-status-message: Started grafana-server

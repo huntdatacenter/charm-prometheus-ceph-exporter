@@ -2,6 +2,9 @@ series: xenial
 applications:
   prometheus-ceph-exporter:
     num_units: 1
+  grafana:
+    charm: cs:grafana
+    num_units: 1
   nrpe:
     charm: cs:nrpe
   prometheus:
@@ -29,4 +32,8 @@ relations:
     - ceph-mon:osd
   - - prometheus-ceph-exporter:ceph
     - ceph-mon
+  - - prometheus:grafana-source
+    - grafana:grafana-source
+  - - prometheus-ceph-exporter:dashboards
+    - grafana:dashboards
 
