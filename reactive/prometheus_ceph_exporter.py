@@ -28,7 +28,9 @@ from charms.reactive.helpers import (
 import yaml
 
 
-DASHBOARD_PATH = os.getcwd() + "/templates/"
+REACTIVE_DIR = os.path.dirname(os.path.abspath(__file__))
+CHARM_DIR = os.path.dirname(REACTIVE_DIR)
+DASHBOARD_PATH = os.path.join(CHARM_DIR, "templates/dashboards")
 SNAP_NAME = "prometheus-ceph-exporter"
 SVC_NAME = "snap.prometheus-ceph-exporter.ceph-exporter"
 SNAP_DATA = "/var/snap/" + SNAP_NAME + "/current/"

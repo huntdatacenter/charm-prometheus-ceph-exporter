@@ -12,24 +12,10 @@ Since the snap is confined to his own filesystem, ceph config file and "exporter
 /var/snap/prometheus-ceph-exporter/current/
 ```
 
-# How to Deploy:
-
-From the MAAS host:
-```
-export JUJU_REPOSITORY=$PWD/charms
-export INTERFACE_PATH=$PWD/interfaces
-```
-
-# Build the charm
+# How to Deploy the charm:
 
 ```
-charm build -s bionic
-```
-
-# Deploy the charm
-
-```
-juju deploy local:xenial/prometheus-ceph-exporter
+juju deploy cs:prometheus-ceph-exporter
 juju add-relation prometheus-ceph-exporter ceph-mon:client
 ```
 
