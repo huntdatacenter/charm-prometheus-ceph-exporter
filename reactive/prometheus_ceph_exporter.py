@@ -119,7 +119,7 @@ def configure_exporter(ceph_client):
     if host.service_running(SVC_NAME):
         hookenv.status_set("active", "Running")
     else:
-        hookenv.status_set("error", "Service didn't start: {}".format(SVC_NAME))
+        hookenv.status_set("blocked", "Service didn't start: {}".format(SVC_NAME))
         raise ServiceError("Service didn't start: {}".format(SVC_NAME))
     set_state("exporter.started")
 
