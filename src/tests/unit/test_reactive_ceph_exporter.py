@@ -8,11 +8,17 @@ import unittest
 from charmhelpers.core import unitdata
 from charmhelpers.core.templating import render
 import mock
-import reactive.prometheus_ceph_exporter
 import yaml
 
-os.environ["JUJU_UNIT_NAME"] = "prometheus-ceph-exporter"
-os.environ["CHARM_DIR"] = "../../"
+# This must be present before importing the reactive module.
+os.environ["JUJU_UNIT_NAME"] = "prometheus-ceph-exporter/0"
+
+import reactive.prometheus_ceph_exporter  # noqa: I100,I202
+
+
+os.environ["CHARM_DIR"] = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..", "..")
+)
 
 
 class SimpleConfigMock(dict):
