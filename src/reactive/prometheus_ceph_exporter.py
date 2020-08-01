@@ -90,7 +90,7 @@ def configure_exporter(ceph_client):
         "service_name": service_name,
         "ringpath": SNAP_DATA,
     }
-    data_changed('mon-hosts', ceph_client.mon_hosts())
+    data_changed("mon-hosts", ceph_client.mon_hosts())
 
     # Write out the ceph.conf
     render("ceph.conf", charm_ceph_conf, ceph_context)
@@ -99,7 +99,7 @@ def configure_exporter(ceph_client):
         "key": str(ceph_client.key()),
         "service_name": service_name,
     }
-    data_changed('ceph-key', ceph_client.key())
+    data_changed("ceph-key", ceph_client.key())
 
     # Write out the cephx_key also
     render("ceph.keyring", cephx_key, ceph_key_context)
@@ -175,7 +175,9 @@ def mon_relation_broken():
 @when("ceph.connected")
 def mon_relation_changed(ceph_client):
     """Check if mon relation has changed data/members."""
-    if data_changed('mon-hosts', ceph_client.mon_hosts()) or data_changed('ceph-key', ceph_client.key()):
+    if data_changed("mon-hosts", ceph_client.mon_hosts()) or data_changed(
+        "ceph-key", ceph_client.key()
+    ):
         host.service_stop(SVC_NAME)
         hookenv.status_set("maintenance", "Updating ceph-client configuration")
         remove_state("exporter.started")
@@ -251,7 +253,9 @@ def update_dashboards_from_resource():
         hookenv.log("BadZipFile: {}".format(error), hookenv.ERROR)
         return
     except PermissionError as error:
-        hookenv.log("Unable to unzip the provided resource: {}".format(error), hookenv.ERROR)
+        hookenv.log(
+            "Unable to unzip the provided resource: {}".format(error), hookenv.ERROR
+        )
         return
 
     register_grafana_dashboards()

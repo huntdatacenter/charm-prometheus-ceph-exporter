@@ -25,9 +25,7 @@ class BasePrometheusCephExporterTest(unittest.TestCase):
         cls.lead_unit_name = model.get_lead_unit_name(
             cls.application_name, model_name=cls.model_name
         )
-        cls.units = model.get_units(
-            cls.application_name, model_name=cls.model_name
-        )
+        cls.units = model.get_units(cls.application_name, model_name=cls.model_name)
         cls.prometheus_ceph_exporter_ip = model.get_app_ips(cls.application_name)[0]
 
 
@@ -47,9 +45,7 @@ class CharmOperationTest(BasePrometheusCephExporterTest):
             if response["Code"] == "0":
                 return
             logging.warning(
-                "Unexpected curl response: {}. Retrying in 30s.".format(
-                    response
-                )
+                "Unexpected curl response: {}. Retrying in 30s.".format(response)
             )
             time.sleep(30)
 
@@ -57,23 +53,21 @@ class CharmOperationTest(BasePrometheusCephExporterTest):
         self.fail(
             "Prometheus-ceph-exporter didn't respond to the command \n"
             "'{curl_command}' as expected.\n"
-            "Result: {result}".format(
-                curl_command=curl_command, result=response
-            )
+            "Result: {result}".format(curl_command=curl_command, result=response)
         )
 
     def test_02_nrpe_http_check(self):
         """Verify nrpe check exists."""
         expected_nrpe_check = "command[check_prometheus_ceph_exporter_http]={} -I 127.0.0.1 -p {} -u {}".format(
-            "/usr/lib/nagios/plugins/check_http",
-            DEFAULT_API_PORT,
-            DEFAULT_API_URL
+            "/usr/lib/nagios/plugins/check_http", DEFAULT_API_PORT, DEFAULT_API_URL
         )
-        logging.debug('Verify the nrpe check is created and has the required content...')
+        logging.debug(
+            "Verify the nrpe check is created and has the required content..."
+        )
         cmd = "cat /etc/nagios/nrpe.d/check_prometheus_ceph_exporter_http.cfg"
         result = model.run_on_unit(self.lead_unit_name, cmd)
-        code = result.get('Code')
-        if code != '0':
+        code = result.get("Code")
+        if code != "0":
             raise model.CommandRunFailed(cmd, result)
-        content = result.get('Stdout')
+        content = result.get("Stdout")
         self.assertTrue(expected_nrpe_check in content)

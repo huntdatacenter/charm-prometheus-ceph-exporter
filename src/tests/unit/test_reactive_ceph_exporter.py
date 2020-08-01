@@ -105,17 +105,15 @@ class TestcephExporterContext(unittest.TestCase):
         self.addCleanup(self.mock_render.stop)
 
     def test_basic_config(
-            self,
-            _mock_hookenv_config,
-            _mock_service_running,
-            _mock_snap_install,
-            _mock_service_start,
-            *args
+        self,
+        _mock_hookenv_config,
+        _mock_service_running,
+        _mock_snap_install,
+        _mock_service_start,
+        *args
     ):
         config = self.def_config
-        config.update(
-            {"daemon_arguments": "foo_arguments"}
-        )
+        config.update({"daemon_arguments": "foo_arguments"})
         _mock_hookenv_config.return_value = config
         _mock_service_running.return_value = True
         _mock_service_start.return_value = True
@@ -123,11 +121,11 @@ class TestcephExporterContext(unittest.TestCase):
         ceph_client = MockCephClient()
         reactive.prometheus_ceph_exporter.configure_exporter(ceph_client)
         # Read the rendered files before the asserts or the tmpfile is removed
-        with open(reactive.prometheus_ceph_exporter.daemon_conf, 'r') as f:
+        with open(reactive.prometheus_ceph_exporter.daemon_conf, "r") as f:
             daemon_conf_content = f.read()
-        with open(reactive.prometheus_ceph_exporter.charm_ceph_conf, 'r') as f:
+        with open(reactive.prometheus_ceph_exporter.charm_ceph_conf, "r") as f:
             ceph_conf_content = f.read()
-        with open(reactive.prometheus_ceph_exporter.cephx_key, 'r') as f:
+        with open(reactive.prometheus_ceph_exporter.cephx_key, "r") as f:
             cephx_key_content = f.read()
         exp_daemon_conf_content = "foo_arguments"
         exp_ceph_conf_content = "mon host = 1.2.3.4 5.6.7.8"
