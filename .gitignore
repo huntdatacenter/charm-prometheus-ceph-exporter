@@ -1,24 +1,39 @@
+# Juju files
+.unit-state.db
+
+layers/*
+interfaces/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
 
+# Tests files and dir
+.pytest_cache/
+.coverage
+.tox
+report/
+htmlcov/
+
 # Log files
 *.log
-.tox/
-.coverage
-
-# vi
-.*.swp
 
 # pycharm
 .idea/
 
+# vi
+.*.swp
+
 # version data
 repo-info
 
-# reports
-report/*
+# Python builds
+deb_dist/
+dist/
 
-# layers
-layers/*
+# Snaps
+*.snap
+
+# Builds
+.build/
