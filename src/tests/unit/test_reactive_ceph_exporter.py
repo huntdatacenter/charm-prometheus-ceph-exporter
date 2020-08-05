@@ -1,3 +1,4 @@
+"""Ceph exporter reactive module unit tests."""
 import grp
 import os
 import pwd
@@ -15,7 +16,7 @@ import yaml
 # This must be present before importing the reactive module.
 os.environ["JUJU_UNIT_NAME"] = "prometheus-ceph-exporter/0"
 
-import reactive.prometheus_ceph_exporter  # noqa: I100,I202
+import reactive.prometheus_ceph_exporter  # noqa: I100,E402
 
 
 os.environ["CHARM_DIR"] = os.path.abspath(
@@ -24,29 +25,40 @@ os.environ["CHARM_DIR"] = os.path.abspath(
 
 
 class SimpleConfigMock(dict):
+    """Config object mock for hookenv.config."""
+
     def __init__(self, *arg, **kw):
+        """Class constructor."""
         super(SimpleConfigMock, self).__init__(*arg, **kw)
         self._changed_dict = {}
         self._changed_default = True
 
     def changed(self, key):
+        """Return whether a config value has changed."""
         return self._changed_dict.get(key, self._changed_default)
 
     def set_changed(self, changed_dict):
+        """Update config."""
         self._changed_dict.update(changed_dict)
 
 
 class MockCephClient:
+    """Mock ceph client."""
+
     def __init__(self, *arg, **kw):
+        """Class constructor."""
         pass
 
     def auth(self):
+        """Fake authentication."""
         return True
 
     def mon_hosts(self):
+        """Hard-code monitor hosts."""
         return ["1.2.3.4", "5.6.7.8"]
 
     def key(self):
+        """Hard-code ceph client key."""
         return "mockcephclientkey"
 
 
@@ -60,7 +72,10 @@ class MockCephClient:
 @mock.patch("reactive.prometheus_ceph_exporter.host.service_running")
 @mock.patch("reactive.prometheus_ceph_exporter.hookenv.config")
 class TestcephExporterContext(unittest.TestCase):
+    """Unit tests for the reactive module."""
+
     def setUp(self):
+        """Pre-test setup."""
         super(TestcephExporterContext, self).setUp()
         self._init_tempdir_and_filenames()
         self._init_load_config_yml_defaults()
@@ -120,6 +135,7 @@ class TestcephExporterContext(unittest.TestCase):
         _mock_service_start,
         *args
     ):
+        """Test of the configure_exporter() method."""
         config = self.def_config
         config.update({"daemon_arguments": "foo_arguments"})
         _mock_hookenv_config.return_value = config
