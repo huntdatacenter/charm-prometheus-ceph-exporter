@@ -2,15 +2,16 @@
 """Installs and configures prometheus-ceph-exporter."""
 
 import os
-from pathlib import Path
 import shutil
 import time
+from pathlib import Path
 from zipfile import BadZipFile, ZipFile
 
 from charmhelpers.contrib.charmsupport import nrpe
 from charmhelpers.contrib.network.ip import get_address_in_network
 from charmhelpers.core import hookenv, host
 from charmhelpers.core.templating import render
+
 from charms.layer import snap
 from charms.reactive import (
     endpoint_from_flag,
@@ -25,6 +26,7 @@ from charms.reactive.helpers import (
     any_file_changed,
     data_changed,
 )
+
 import yaml
 
 

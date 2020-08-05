@@ -7,7 +7,9 @@ import unittest
 
 from charmhelpers.core import unitdata
 from charmhelpers.core.templating import render
+
 import mock
+
 import yaml
 
 # This must be present before importing the reactive module.
