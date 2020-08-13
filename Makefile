@@ -52,9 +52,9 @@ lint:
 	@echo "Running lint checks"
 	@cd src && tox -e lint
 
-proof:
+proof: build
 	@echo "Running charm proof"
-	@charm proof src
+	@charm proof ${CHARM_BUILD_DIR}/${CHARM_NAME}
 
 unittests:
 	@echo "Running unit tests"
