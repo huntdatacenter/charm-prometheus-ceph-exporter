@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 """Installs and configures prometheus-ceph-exporter."""
 
+import hashlib
+import json
 import os
 import shutil
 import time
@@ -228,7 +230,11 @@ def register_grafana_dashboards():
     dash_dir = Path(DASHBOARD_PATH)
     for dash_file in dash_dir.glob("*.json"):
         dashboard = dash_file.read_text()
-        grafana_endpoint.register_dashboard(dash_file.stem, dashboard)
+        digest = hashlib.md5(dashboard.encode("utf8")).hexdigest()
+        dash_dict = json.loads(dashboard)
+        dash_dict["digest"] = digest
+        dash_dict["source_model"] = hookenv.model_name()
+        grafana_endpoint.register_dashboard(dash_file.stem, dash_dict)
         hookenv.log("Pushed {}".format(dash_file))
 
 
