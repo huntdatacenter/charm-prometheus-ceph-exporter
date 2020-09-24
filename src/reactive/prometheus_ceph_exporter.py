@@ -89,7 +89,7 @@ def configure_exporter(ceph_client):
     snap.install(SNAP_NAME, channel=channel, force_dangerous=False)
 
     ceph_context = {
-        "auth_supported": ceph_client.auth(),
+        "auth_supported": ceph_client.auth,
         "mon_hosts": ceph_client.mon_hosts(),
         "service_name": service_name,
         "ringpath": SNAP_DATA,
@@ -100,10 +100,10 @@ def configure_exporter(ceph_client):
     render("ceph.conf", charm_ceph_conf, ceph_context)
 
     ceph_key_context = {
-        "key": str(ceph_client.key()),
+        "key": str(ceph_client.key),
         "service_name": service_name,
     }
-    data_changed("ceph-key", ceph_client.key())
+    data_changed("ceph-key", ceph_client.key)
 
     # Write out the cephx_key also
     render("ceph.keyring", cephx_key, ceph_key_context)
@@ -180,7 +180,7 @@ def mon_relation_broken():
 def mon_relation_changed(ceph_client):
     """Check if mon relation has changed data/members."""
     if data_changed("mon-hosts", ceph_client.mon_hosts()) or data_changed(
-        "ceph-key", ceph_client.key()
+        "ceph-key", ceph_client.key
     ):
         host.service_stop(SVC_NAME)
         hookenv.status_set("maintenance", "Updating ceph-client configuration")
