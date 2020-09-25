@@ -384,6 +384,77 @@
       "valueName": "current"
     },
     {
+      "cacheTimeout": null,
+      "datasource": "prometheus - Juju generated source",
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 6,
+        "y": 1
+      },
+      "id": 14,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [
+              {
+                "$$hashKey": "object:5036",
+                "from": "null",
+                "id": 0,
+                "text": "N/A",
+                "to": "null",
+                "type": 2
+              }
+            ],
+            "nullValueMode": "connected",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "dark-green",
+                  "value": null
+                },
+                {
+                  "color": "rgba(237, 129, 40, 0.89)",
+                  "value": 80
+                },
+                {
+                  "color": "dark-red",
+                  "value": 85
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal"
+      },
+      "pluginVersion": "6.7.4",
+      "targets": [
+        {
+          "expr": "predict_linear(ceph_osd_utilization{osd=\"$osd\"}[1d], 72*3600)",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Predicted utilization",
+          "refId": "A",
+          "step": 60
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Predicted Utilization",
+      "type": "stat"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
