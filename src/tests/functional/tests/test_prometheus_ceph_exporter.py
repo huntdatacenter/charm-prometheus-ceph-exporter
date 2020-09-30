@@ -31,6 +31,18 @@ class BasePrometheusCephExporterTest(unittest.TestCase):
 
 class CharmOperationTest(BasePrometheusCephExporterTest):
     """Verify operations."""
+    def run_command(self, cmd):
+        result = model.run_on_unit(self.lead_unit_name, cmd)
+        code = result.get("Code")
+        if code != "0":
+            raise model.CommandRunFailed(cmd, result)
+        return result.get("Stdout")
+
+    def tearDown(self):
+        model.set_application_config(
+            self.application_name, {"snap_channel": "stable"}
+        )
+        model.block_until_all_units_idle()
 
     def test_01_api_ready(self):
         """Verify if the API is ready.
@@ -67,9 +79,19 @@ class CharmOperationTest(BasePrometheusCephExporterTest):
             "Verify the nrpe check is created and has the required content..."
         )
         cmd = "cat /etc/nagios/nrpe.d/check_prometheus_ceph_exporter_http.cfg"
-        result = model.run_on_unit(self.lead_unit_name, cmd)
-        code = result.get("Code")
-        if code != "0":
-            raise model.CommandRunFailed(cmd, result)
-        content = result.get("Stdout")
+        content = self.run_command(cmd)
         self.assertTrue(expected_nrpe_check in content)
+
+    def test_03_snap_upgrade(self):
+        cmd = "ps axf | grep '/bin/sh /snap/prometheus-ceph-exporter'"
+        pre_content = self.run_command(cmd)
+        model.set_application_config(
+            self.application_name, {"snap_channel": "edge"}
+        )
+        model.block_until_all_units_idle()
+        cmd = "ps axf | grep '/bin/sh /snap/prometheus-ceph-exporter'"
+        post_content = self.run_command(cmd)
+        self.assertNotEqual(
+            pre_content, post_content,
+            msg="snap version didn't change on edge channel"
+        )
