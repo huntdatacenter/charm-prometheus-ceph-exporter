@@ -36,7 +36,7 @@ REACTIVE_DIR = os.path.dirname(os.path.abspath(__file__))
 CHARM_DIR = os.path.dirname(REACTIVE_DIR)
 DASHBOARD_PATH = os.path.join(CHARM_DIR, "templates/dashboards")
 SNAP_NAME = "prometheus-ceph-exporter"
-SVC_NAME = "snap.prometheus-ceph-exporter.ceph-exporter"
+SVC_NAME = "snap.%s.ceph-exporter" % SNAP_NAME
 SNAP_DATA = "/var/snap/" + SNAP_NAME + "/current/"
 PORT_DEF = 9128
 service_name = hookenv.service_name()
@@ -63,6 +63,25 @@ def validate_config(filename):
     return yaml.safe_load(open(filename))
 
 
+@when_not("snap.installed.prometheus-ceph-exporter")
+def install_snap_channel():
+    """Install the Exporter whenever available."""
+    hookenv.status_set("maintenance", "Installing Exporter")
+    update_snap_channel()
+
+
+@when('config.changed.snap_channel')
+def update_snap_channel():
+    """
+    Update the current software base on the snap_channel.
+
+    as a side effect, this will set the 'snap.installed.<app>' flag
+    """
+    config = hookenv.config()
+    channel = config.get("snap_channel", "stable")
+    snap.install(SNAP_NAME, channel=channel, force_dangerous=False)
+
+
 @when("snap.installed.prometheus-ceph-exporter")
 @when_not("ports-open")
 def open_port():
@@ -79,15 +98,10 @@ def waiting_to_configure():
 
 
 @when("ceph.available")
+@when("snap.installed.prometheus-ceph-exporter")
 @when_not("exporter.started")
 def configure_exporter(ceph_client):
     """Configure the daemon."""
-    hookenv.status_set("maintenance", "Installing software")
-
-    config = hookenv.config()
-    channel = config.get("snap_channel", "stable")
-    snap.install(SNAP_NAME, channel=channel, force_dangerous=False)
-
     ceph_context = {
         "auth_supported": ceph_client.auth,
         "mon_hosts": ceph_client.mon_hosts(),
