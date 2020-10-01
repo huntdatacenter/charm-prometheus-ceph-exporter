@@ -31,7 +31,9 @@ class BasePrometheusCephExporterTest(unittest.TestCase):
 
 class CharmOperationTest(BasePrometheusCephExporterTest):
     """Verify operations."""
+
     def run_command(self, cmd):
+        """Run a command on the lead unit, and scrape stdout."""
         result = model.run_on_unit(self.lead_unit_name, cmd)
         code = result.get("Code")
         if code != "0":
@@ -39,9 +41,8 @@ class CharmOperationTest(BasePrometheusCephExporterTest):
         return result.get("Stdout")
 
     def tearDown(self):
-        model.set_application_config(
-            self.application_name, {"snap_channel": "stable"}
-        )
+        """After each test, reset the app config."""
+        model.set_application_config(self.application_name, {"snap_channel": "stable"})
         model.block_until_all_units_idle()
 
     def test_01_api_ready(self):
@@ -87,16 +88,12 @@ class CharmOperationTest(BasePrometheusCephExporterTest):
         cmd = "snap list prometheus-ceph-exporter | egrep 'stable|edge'"
         content = self.run_command(cmd)
         self.assertIn(
-            "latest/stable", content,
-            msg="snap version should be stable by default"
+            "latest/stable", content, msg="snap version should be stable by default"
         )
 
-        model.set_application_config(
-            self.application_name, {"snap_channel": "edge"}
-        )
+        model.set_application_config(self.application_name, {"snap_channel": "edge"})
         model.block_until_all_units_idle()
         content = self.run_command(cmd)
         self.assertIn(
-            "latest/edge", content,
-            msg="snap version should be edge by config change"
+            "latest/edge", content, msg="snap version should be edge by config change"
         )

@@ -70,7 +70,7 @@ def install_snap_channel():
     update_snap_channel()
 
 
-@when('config.changed.snap_channel')
+@when("config.changed.snap_channel")
 def update_snap_channel():
     """
     Update the current software base on the snap_channel.
