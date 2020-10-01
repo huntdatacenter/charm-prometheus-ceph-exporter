@@ -83,15 +83,20 @@ class CharmOperationTest(BasePrometheusCephExporterTest):
         self.assertTrue(expected_nrpe_check in content)
 
     def test_03_snap_upgrade(self):
-        cmd = "ps axf | grep '/bin/sh /snap/prometheus-ceph-exporter'"
-        pre_content = self.run_command(cmd)
+        """When upgrading the snap, the running version should be different."""
+        cmd = "snap list prometheus-ceph-exporter | egrep 'stable|edge'"
+        content = self.run_command(cmd)
+        self.assertIn(
+            "latest/stable", content,
+            msg="snap version should be stable by default"
+        )
+
         model.set_application_config(
             self.application_name, {"snap_channel": "edge"}
         )
         model.block_until_all_units_idle()
-        cmd = "ps axf | grep '/bin/sh /snap/prometheus-ceph-exporter'"
-        post_content = self.run_command(cmd)
-        self.assertNotEqual(
-            pre_content, post_content,
-            msg="snap version didn't change on edge channel"
+        content = self.run_command(cmd)
+        self.assertIn(
+            "latest/edge", content,
+            msg="snap version should be edge by config change"
         )
