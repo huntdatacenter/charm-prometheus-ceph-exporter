@@ -48,6 +48,10 @@ build:
 release: clean build
 	@echo "Charm is built at ${CHARM_BUILD_DIR}/${CHARM_NAME}"
 
+black:
+	@echo "Blacken"
+	@cd src && tox -e black
+
 lint:
 	@echo "Running lint checks"
 	@cd src && tox -e lint

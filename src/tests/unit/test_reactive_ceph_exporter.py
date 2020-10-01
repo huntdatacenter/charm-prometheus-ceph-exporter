@@ -157,6 +157,6 @@ class TestcephExporterContext(unittest.TestCase):
         exp_ceph_conf_content = "mon host = 1.2.3.4 5.6.7.8"
         exp_cephx_key_content = "key = mockcephclientkey"
 
-        self.assertTrue(exp_daemon_conf_content in daemon_conf_content)
-        self.assertTrue(exp_ceph_conf_content in ceph_conf_content)
-        self.assertTrue(exp_cephx_key_content in cephx_key_content)
+        self.assertIn(exp_daemon_conf_content, daemon_conf_content)
+        self.assertIn(exp_ceph_conf_content, ceph_conf_content)
+        self.assertIn(exp_cephx_key_content, cephx_key_content)
