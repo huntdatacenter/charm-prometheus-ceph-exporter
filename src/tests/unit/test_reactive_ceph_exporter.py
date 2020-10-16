@@ -49,6 +49,7 @@ class MockCephClient:
         """Class constructor."""
         pass
 
+    @property
     def auth(self):
         """Fake authentication."""
         return True
@@ -57,6 +58,7 @@ class MockCephClient:
         """Hard-code monitor hosts."""
         return ["1.2.3.4", "5.6.7.8"]
 
+    @property
     def key(self):
         """Hard-code ceph client key."""
         return "mockcephclientkey"
