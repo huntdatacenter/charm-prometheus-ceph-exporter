@@ -41,7 +41,7 @@ submodules-update:
 
 build:
 	@echo "Building charm to directory ${CHARM_BUILD_DIR}/${CHARM_NAME}"
-	@-git describe --tags > ./repo-info
+	@-git rev-parse --abbrev-ref HEAD > ./src/repo-info
 	@CHARM_LAYERS_DIR=${CHARM_LAYERS_DIR} CHARM_INTERFACES_DIR=${CHARM_INTERFACES_DIR} \
 		TERM=linux CHARM_BUILD_DIR=${CHARM_BUILD_DIR} charm build src/
 
