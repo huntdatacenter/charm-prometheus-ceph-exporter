@@ -80,6 +80,9 @@ def update_snap_channel():
     config = hookenv.config()
     channel = config.get("snap_channel", "stable")
     snap.install(SNAP_NAME, channel=channel, force_dangerous=False)
+    if host.service_running(SVC_NAME):
+        host.service_stop(SVC_NAME)
+    remove_state("exporter.started")
 
 
 @when("snap.installed.prometheus-ceph-exporter")
