@@ -2,6 +2,9 @@ series: focal
 applications:
   prometheus-ceph-exporter:
     num_units: 1
+    options:
+      # edge channel for Nautilus+
+      snap_channel: edge
   grafana:
     charm: cs:grafana
     num_units: 1
@@ -13,12 +16,13 @@ applications:
   ceph-mon:
     charm: cs:ceph-mon
     num_units: 1
-    series: bionic
+    series: focal
     options:
       expected-osd-count: 3
       monitor-count: 1
   ceph-osd:
     charm: cs:ceph-osd
+    # ussuri is focal LTS but we must run bionic queens osd due to lxd
     series: bionic
     num_units: 3
     options:
