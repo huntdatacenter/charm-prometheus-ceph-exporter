@@ -10,5 +10,5 @@ pytest
 pytest-cov
 pytest-html
 -r ../wheelhouse.txt
-git+https://git.launchpad.net/~jjo/layer-snap@cab2b604695f39a81abe47b22b8426e44e66df8f#egg=charms.layer
+git+https://git.launchpad.net/~jjo/layer-snap@cab2b604695f39a81abe47b22b8426e44e66df8f#egg=layer.snap
 git+https://github.com/openstack-charmers/zaza.git#egg=zaza
