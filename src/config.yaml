@@ -5,6 +5,14 @@ options:
     description: |
         If install_method is set to "snap" this option controlls channel name.
         Supported values are: "stable", "candidate", "beta" and "edge"
+  check_timeout:
+    default: 15
+    type: int
+    description: |
+      A number of seconds before NRPE checks timeout from not being able
+      to connect to the exporter. Raise this value to combat
+      'CHECK_NRPE Socket timeout alerts'. This value has to be aligned with
+      Prometheus scrape-interval charm config.
   access-network:
     type: string
     default:

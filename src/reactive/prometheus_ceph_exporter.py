@@ -209,10 +209,17 @@ def update_nrpe_config(svc):
     """Add nrpe check."""
     hostname = nrpe.get_nagios_hostname()
     nrpe_setup = nrpe.NRPE(hostname=hostname)
+    config = hookenv.config()
+    try:
+        nrpe_timeout = str(int(config["check_timeout"]))
+    except ValueError:
+        nrpe_timeout = "15"
     nrpe_setup.add_check(
         "prometheus_ceph_exporter_http",
         "Prometheus Ceph Exporter HTTP check",
-        "check_http -I 127.0.0.1 -p {} -u /metrics".format(PORT_DEF),
+        "check_http -I 127.0.0.1 -p {} -u /metrics -t {}".format(
+            PORT_DEF, nrpe_timeout
+        ),
     )
     nrpe_setup.write()
 
