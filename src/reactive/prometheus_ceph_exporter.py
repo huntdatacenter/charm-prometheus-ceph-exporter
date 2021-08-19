@@ -45,6 +45,13 @@ charm_ceph_conf = os.path.join(os.sep, SNAP_DATA, "ceph.conf")
 cephx_key = os.path.join(
     os.sep, SNAP_DATA, "ceph.client.{}.keyring".format(service_name)
 )
+CEPH_VERSIONS = {
+    "luminous": 1,
+    "mimic": 2,
+    "nautilus": 3,
+    "octopus": 4,
+    "pacific": 5,
+}
 
 
 class ServiceError(Exception):
@@ -133,16 +140,24 @@ def configure_exporter(ceph_client):
     # Write out the daemon.arguments file
     render("daemon_arguments", daemon_conf, daemon_context)
 
-    # Start ceph-exporter
-    hookenv.log("Starting {}...".format(SVC_NAME))
-    host.service_start(SVC_NAME)
-    time.sleep(10)  # service is type=simple can't tell if it actually started
-    if host.service_running(SVC_NAME):
-        hookenv.status_set("active", "Running")
+    # If Ceph version > nautilus, block exporter
+    if (ceph_client.version is not None) and (ceph_client.version >= "nautilus"):
+        hookenv.status_set(
+            "blocked",
+            "Service {} didn't start because"
+            " ceph version {} is incompatable".format(SVC_NAME, ceph_client.version),
+        )
     else:
-        hookenv.status_set("blocked", "Service didn't start: {}".format(SVC_NAME))
-        raise ServiceError("Service didn't start: {}".format(SVC_NAME))
-    set_state("exporter.started")
+        # Start ceph-exporter
+        hookenv.log("Starting {}...".format(SVC_NAME))
+        host.service_start(SVC_NAME)
+        time.sleep(10)  # service is type=simple can't tell if it actually started
+        if host.service_running(SVC_NAME):
+            hookenv.status_set("active", "Running")
+        else:
+            hookenv.status_set("blocked", "Service didn't start: {}".format(SVC_NAME))
+            raise ServiceError("Service didn't start: {}".format(SVC_NAME))
+        set_state("exporter.started")
 
 
 def get_exporter_host(interface="ceph-exporter"):
@@ -196,8 +211,10 @@ def mon_relation_broken():
 @when("ceph.connected")
 def mon_relation_changed(ceph_client):
     """Check if mon relation has changed data/members."""
-    if data_changed("mon-hosts", ceph_client.mon_hosts()) or data_changed(
-        "ceph-key", ceph_client.key
+    if (
+        data_changed("mon-hosts", ceph_client.mon_hosts())
+        or data_changed("ceph-key", ceph_client.key)
+        or data_changed("ceph-version", ceph_client.version)
     ):
         host.service_stop(SVC_NAME)
         hookenv.status_set("maintenance", "Updating ceph-client configuration")

@@ -63,6 +63,11 @@ class MockCephClient:
         """Hard-code ceph client key."""
         return "mockcephclientkey"
 
+    @property
+    def version(self):
+        """Hard-code ceph version."""
+        return "octopus"
+
 
 @mock.patch("os.chown")
 @mock.patch("os.chmod")
