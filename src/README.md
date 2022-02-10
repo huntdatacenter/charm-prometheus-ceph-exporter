@@ -2,6 +2,11 @@
 
 This charm provides the [Prometheus Ceph exporter](https://github.com/digitalocean/ceph_exporter), part of the [Prometheus](https://prometheus.io/) monitoring system
 
+# IMPORTANT NOTICE
+
+This charm is deprecated since ceph Nautilus (14.0.0+), please use [charm-ceph-dashbaord](https://opendev.org/openstack/charm-ceph-dashboard) instead.
+Otherwise you will run into bug [LP#1931745](https://bugs.launchpad.net/charm-prometheus-ceph-exporter/+bug/1931745).
+
 # Introduction and Preparation
 
 The charm implements ceph-exporter functionality for Prometheus, it consumes the prometheus-ceph-exporter snap package,
