@@ -9,10 +9,8 @@ tags:
   - prometheus
   - ceph
 series:
+  - jammy
   - focal
-  - bionic
-  - xenial
-  - trusty
 subordinate: false
 provides:
   ceph-exporter:
