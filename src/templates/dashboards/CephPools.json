@@ -3,7 +3,7 @@
 {
   "__inputs": [
     {
-      "name": "prometheus - Juju generated source",
+      "name": "DS_PROMETHEUS_- JUJU GENERATED SOURCE",
       "label": "prometheus - Juju generated source",
       "description": "",
       "type": "datasource",
@@ -16,7 +16,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "4.6.2"
+      "version": "7.5.17"
     },
     {
       "type": "panel",
@@ -54,620 +54,619 @@
   "editable": true,
   "gnetId": 926,
   "graphTooltip": 0,
-  "hideControls": false,
   "id": null,
   "links": [],
-  "refresh": "1m",
-  "rows": [
+  "panels": [
     {
-      "collapse": false,
-      "height": "250px",
-      "panels": [
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "prometheus - Juju generated source",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 4,
-          "grid": {},
-          "gridPos": {
-            "h": 7,
-            "w": 16,
-            "x": 0,
-            "y": 1
-          },
-          "height": "",
-          "id": 2,
-          "interval": "$interval",
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "max": true,
-            "min": true,
-            "rightSide": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 0,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [
-            {
-              "alias": "/^Total.*$/",
-              "fill": 0,
-              "linewidth": 4,
-              "stack": false
-            },
-            {
-              "alias": "/^Raw.*$/",
-              "color": "#BF1B00",
-              "fill": 0,
-              "linewidth": 4
-            }
-          ],
-          "spaceLength": 10,
-          "span": 10,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "ceph_pool_available_bytes{pool=~\"$pool\", job=\"$job\"}",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Avilable - {{ pool }}",
-              "metric": "ceph_pool_available_bytes",
-              "refId": "A",
-              "step": 60
-            },
-            {
-              "expr": "ceph_pool_used_bytes{pool=~\"$pool\", job=\"$job\"}",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Used - {{ pool }}",
-              "metric": "ceph_pool",
-              "refId": "B",
-              "step": 60
-            },
-            {
-              "expr": "ceph_pool_used_bytes{pool=~\"$pool\", job=\"$job\"} + ceph_pool_available_bytes{pool=~\"$pool\", job=\"$job\"}",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Total - {{ pool }}",
-              "metric": "ceph_pool",
-              "refId": "C",
-              "step": 60
-            },
-            {
-              "expr": "ceph_pool_raw_used_bytes{pool=~\"$pool\", job=\"$job\"}",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Raw - {{ pool }}",
-              "metric": "ceph_pool",
-              "refId": "D",
-              "step": 60
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Pool Storage",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "bytes",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            }
-          ]
-        },
-        {
-          "cacheTimeout": null,
-          "colorBackground": false,
-          "colorValue": true,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "datasource": "prometheus - Juju generated source",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "format": "percentunit",
-          "gauge": {
-            "maxValue": 1,
-            "minValue": 0,
-            "show": true,
-            "thresholdLabels": false,
-            "thresholdMarkers": true
-          },
-          "gridPos": {
-            "h": 7,
-            "w": 4,
-            "x": 16,
-            "y": 1
-          },
-          "id": 10,
-          "interval": null,
-          "links": [],
-          "mappingType": 1,
-          "mappingTypes": [
-            {
-              "name": "value to text",
-              "value": 1
-            },
-            {
-              "name": "range to text",
-              "value": 2
-            }
-          ],
-          "maxDataPoints": 100,
-          "nullPointMode": "connected",
-          "nullText": null,
-          "postfix": "",
-          "postfixFontSize": "50%",
-          "prefix": "",
-          "prefixFontSize": "50%",
-          "rangeMaps": [
-            {
-              "from": "null",
-              "text": "N/A",
-              "to": "null"
-            }
-          ],
-          "span": 2,
-          "sparkline": {
-            "fillColor": "rgba(31, 118, 189, 0.18)",
-            "full": false,
-            "lineColor": "rgb(31, 120, 193)",
-            "show": false
-          },
-          "tableColumn": "",
-          "targets": [
-            {
-              "expr": " ceph_pool_used_bytes{pool=\"$pool\", job=\"$job\"} / (ceph_pool_available_bytes{pool=\"$pool\", job=\"$job\"} + ceph_pool_used_bytes{pool=\"$pool\", job=\"$job\"})",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "refId": "A",
-              "step": 60
-            }
-          ],
-          "thresholds": "",
-          "title": "Usage",
-          "type": "singlestat",
-          "valueFontSize": "80%",
-          "valueMaps": [
-            {
-              "op": "=",
-              "text": "N/A",
-              "value": "null"
-            }
-          ],
-          "valueName": "current"
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "cacheTimeout": null,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "prometheus - Juju generated source",
-          "fill": 1,
-          "fillGradient": 0,
-          "gridPos": {
-            "h": 7,
-            "w": 4,
-            "x": 20,
-            "y": 1
-          },
-          "hiddenSeries": false,
-          "id": 13,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 1,
-          "links": [],
-          "nullPointMode": "null",
-          "options": {
-            "dataLinks": []
-          },
-          "percentage": false,
-          "pluginVersion": "6.7.4",
-          "pointradius": 2,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "predict_linear(ceph_pool_available_bytes{pool=~\"$pool\"}[1d], 72*3600)",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Predicted available bytes - $pool",
-              "refId": "A",
-              "step": 60
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeRegions": [],
-          "timeShift": null,
-          "title": "Predicted pool storage",
-          "tooltip": {
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "$$hashKey": "object:5787",
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            },
-            {
-              "$$hashKey": "object:5788",
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": null,
-              "show": true
-            }
-          ],
-          "yaxis": {
-            "align": false,
-            "alignLevel": null
-          }
-        }
-      ],
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 11,
+      "panels": [],
       "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": true,
       "title": "Pool: $pool",
-      "titleSize": "h6"
+      "type": "row"
     },
     {
-      "collapse": false,
-      "height": "250px",
-      "panels": [
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS_- JUJU GENERATED SOURCE}",
+      "decimals": 2,
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fill": 4,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 7,
+        "w": 20,
+        "x": 0,
+        "y": 1
+      },
+      "height": "",
+      "hiddenSeries": false,
+      "id": 2,
+      "interval": "$interval",
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 0,
+      "links": [],
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.17",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "prometheus - Juju generated source",
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "grid": {},
-          "height": "",
-          "id": 7,
-          "legend": {
-            "avg": false,
-            "current": false,
-            "max": false,
-            "min": false,
-            "show": true,
-            "total": false,
-            "values": false
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "span": 6,
-          "stack": false,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "ceph_pool_objects_total{pool=~\"$pool\"}",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Objects - {{ pool }}",
-              "refId": "A",
-              "step": 60
-            },
-            {
-              "expr": "ceph_pool_dirty_objects_total{pool=~\"$pool\"}",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Dirty Objects - {{ pool }}",
-              "refId": "B",
-              "step": 60
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Objects in Pool",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "cumulative"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            }
-          ]
+          "alias": "/^Total.*$/",
+          "fill": 0,
+          "linewidth": 4,
+          "stack": false
         },
         {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "prometheus - Juju generated source",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "grid": {},
-          "id": 4,
-          "interval": "$interval",
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "max": true,
-            "min": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "span": 6,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "irate(ceph_pool_read_total{pool=~\"$pool\"}[3m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Read - {{ pool }}",
-              "refId": "B",
-              "step": 60
-            },
-            {
-              "expr": "irate(ceph_pool_write_total{pool=~\"$pool\"}[3m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Write - {{ pool }}",
-              "refId": "A",
-              "step": 60
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "IOPS",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "none",
-              "label": "IOPS",
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "short",
-              "label": "IOPS",
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": false
-            }
-          ]
-        },
-        {
-          "aliasColors": {},
-          "bars": false,
-          "dashLength": 10,
-          "dashes": false,
-          "datasource": "prometheus - Juju generated source",
-          "decimals": 2,
-          "editable": true,
-          "error": false,
-          "fill": 1,
-          "grid": {},
-          "id": 5,
-          "interval": "$interval",
-          "legend": {
-            "alignAsTable": true,
-            "avg": true,
-            "current": true,
-            "max": true,
-            "min": true,
-            "show": true,
-            "total": false,
-            "values": true
-          },
-          "lines": true,
-          "linewidth": 2,
-          "links": [],
-          "nullPointMode": "connected",
-          "percentage": false,
-          "pointradius": 5,
-          "points": false,
-          "renderer": "flot",
-          "seriesOverrides": [],
-          "spaceLength": 10,
-          "span": 12,
-          "stack": true,
-          "steppedLine": false,
-          "targets": [
-            {
-              "expr": "irate(ceph_pool_read_bytes_total{pool=\"$pool\"}[3m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Read Bytes - {{ pool }}",
-              "refId": "A",
-              "step": 60
-            },
-            {
-              "expr": "irate(ceph_pool_write_bytes_total{pool=\"$pool\"}[3m])",
-              "interval": "$interval",
-              "intervalFactor": 1,
-              "legendFormat": "Written Bytes - {{ pool }}",
-              "refId": "B",
-              "step": 60
-            }
-          ],
-          "thresholds": [],
-          "timeFrom": null,
-          "timeShift": null,
-          "title": "Throughput",
-          "tooltip": {
-            "msResolution": false,
-            "shared": true,
-            "sort": 0,
-            "value_type": "individual"
-          },
-          "type": "graph",
-          "xaxis": {
-            "buckets": null,
-            "mode": "time",
-            "name": null,
-            "show": true,
-            "values": []
-          },
-          "yaxes": [
-            {
-              "format": "Bps",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            },
-            {
-              "format": "Bps",
-              "label": null,
-              "logBase": 1,
-              "max": null,
-              "min": 0,
-              "show": true
-            }
-          ]
+          "alias": "/^Raw.*$/",
+          "color": "#BF1B00",
+          "fill": 0,
+          "linewidth": 4
         }
       ],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "ceph_pool_available_bytes{pool=~\"$pool\", job=\"$job\", cloud=\"$cloud\"}",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Avilable - {{ pool }}",
+          "metric": "ceph_pool_available_bytes",
+          "refId": "A",
+          "step": 60
+        },
+        {
+          "exemplar": true,
+          "expr": "ceph_pool_used_bytes{pool=~\"$pool\", job=\"$job\", cloud=\"$cloud\"}",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Used - {{ pool }}",
+          "metric": "ceph_pool",
+          "refId": "B",
+          "step": 60
+        },
+        {
+          "exemplar": true,
+          "expr": "ceph_pool_used_bytes{pool=~\"$pool\", job=\"$job\", cloud=\"$cloud\"} + ceph_pool_available_bytes{pool=~\"$pool\", job=\"$job\", cloud=\"$cloud\"}",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Total - {{ pool }}",
+          "metric": "ceph_pool",
+          "refId": "C",
+          "step": 60
+        },
+        {
+          "exemplar": true,
+          "expr": "ceph_pool_raw_used_bytes{pool=~\"$pool\", job=\"$job\", cloud=\"$cloud\"}",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Raw - {{ pool }}",
+          "metric": "ceph_pool",
+          "refId": "D",
+          "step": 60
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Pool Storage",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "bytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "rgba(245, 54, 54, 0.9)",
+        "rgba(237, 129, 40, 0.89)",
+        "rgba(50, 172, 45, 0.97)"
+      ],
+      "datasource": "${DS_PROMETHEUS_- JUJU GENERATED SOURCE}",
+      "decimals": 2,
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "format": "percentunit",
+      "gauge": {
+        "maxValue": 1,
+        "minValue": 0,
+        "show": true,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 20,
+        "y": 1
+      },
+      "id": 10,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": " ceph_pool_used_bytes{pool=\"$pool\", job=\"$job\", cloud=\"$cloud\"} / (ceph_pool_available_bytes{pool=\"$pool\", job=\"$job\", cloud=\"$cloud\"} + ceph_pool_used_bytes{pool=\"$pool\", job=\"$job\", cloud=\"$cloud\"})",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "refId": "A",
+          "step": 60
+        }
+      ],
+      "thresholds": "",
+      "title": "Usage",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 12,
+      "panels": [],
       "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
       "title": "New row",
-      "titleSize": "h6"
+      "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS_- JUJU GENERATED SOURCE}",
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "height": "",
+      "hiddenSeries": false,
+      "id": 7,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.17",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "ceph_pool_objects_total{pool=~\"$pool\", cloud=\"$cloud\"}",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Objects - {{ pool }}",
+          "refId": "A",
+          "step": 60
+        },
+        {
+          "exemplar": true,
+          "expr": "ceph_pool_dirty_objects_total{pool=~\"$pool\", cloud=\"$cloud\"}",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Dirty Objects - {{ pool }}",
+          "refId": "B",
+          "step": 60
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Objects in Pool",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "cumulative"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS_- JUJU GENERATED SOURCE}",
+      "decimals": 2,
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "hiddenSeries": false,
+      "id": 4,
+      "interval": "$interval",
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.17",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "irate(ceph_pool_read_total{pool=~\"$pool\", cloud=\"$cloud\"}[3m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Read - {{ pool }}",
+          "refId": "B",
+          "step": 60
+        },
+        {
+          "exemplar": true,
+          "expr": "irate(ceph_pool_write_total{pool=~\"$pool\", cloud=\"$cloud\"}[3m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Write - {{ pool }}",
+          "refId": "A",
+          "step": 60
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "IOPS",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "none",
+          "label": "IOPS",
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": "IOPS",
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS_- JUJU GENERATED SOURCE}",
+      "decimals": 2,
+      "editable": true,
+      "error": false,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "grid": {},
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "hiddenSeries": false,
+      "id": 5,
+      "interval": "$interval",
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 2,
+      "links": [],
+      "nullPointMode": "connected",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.17",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "irate(ceph_pool_read_bytes_total{pool=\"$pool\", cloud=\"$cloud\"}[3m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Read Bytes - {{ pool }}",
+          "refId": "A",
+          "step": 60
+        },
+        {
+          "exemplar": true,
+          "expr": "irate(ceph_pool_write_bytes_total{pool=\"$pool\", cloud=\"$cloud\"}[3m])",
+          "interval": "$interval",
+          "intervalFactor": 1,
+          "legendFormat": "Written Bytes - {{ pool }}",
+          "refId": "B",
+          "step": 60
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Throughput",
+      "tooltip": {
+        "msResolution": false,
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "Bps",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        },
+        {
+          "format": "Bps",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": 0,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
-  "schemaVersion": 14,
+  "refresh": "1m",
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [
     "ceph",
@@ -680,10 +679,13 @@
         "auto_count": 10,
         "auto_min": "1m",
         "current": {
+          "selected": false,
           "text": "1m",
           "value": "1m"
         },
         "datasource": null,
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Interval",
@@ -693,7 +695,7 @@
           {
             "selected": false,
             "text": "auto",
-            "value": "$__auto_interval"
+            "value": "$__auto_interval_interval"
           },
           {
             "selected": true,
@@ -748,21 +750,56 @@
         ],
         "query": "1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
         "refresh": 2,
+        "skipUrlSync": false,
         "type": "interval"
       },
       {
         "allValue": null,
         "current": {},
-        "datasource": "prometheus - Juju generated source",
+        "datasource": "${DS_PROMETHEUS_- JUJU GENERATED SOURCE}",
+        "definition": "label_values(ceph_pool_objects_total, cloud)",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "Cloud: ",
+        "multi": false,
+        "name": "cloud",
+        "options": [],
+        "query": {
+          "query": "label_values(ceph_pool_objects_total, cloud)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS_- JUJU GENERATED SOURCE}",
+        "definition": "label_values(ceph_pool_objects_total{cloud=~\"$cloud\"}, job)",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Exporter",
         "multi": false,
         "name": "job",
         "options": [],
-        "query": "label_values(ceph_pool_objects_total, job)",
+        "query": {
+          "query": "label_values(ceph_pool_objects_total{cloud=~\"$cloud\"}, job)",
+          "refId": "StandardVariableQuery"
+        },
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
         "tags": [],
@@ -773,16 +810,23 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "prometheus - Juju generated source",
+        "datasource": "${DS_PROMETHEUS_- JUJU GENERATED SOURCE}",
+        "definition": "label_values(ceph_pool_objects_total{job=\"$job\",cloud=~\"$cloud\"}, pool)",
+        "description": null,
+        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Pool",
         "multi": false,
         "name": "pool",
         "options": [],
-        "query": "label_values(ceph_pool_objects_total{job=\"$job\"}, pool)",
+        "query": {
+          "query": "label_values(ceph_pool_objects_total{job=\"$job\",cloud=~\"$cloud\"}, pool)",
+          "refId": "StandardVariableQuery"
+        },
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
         "tags": [],
